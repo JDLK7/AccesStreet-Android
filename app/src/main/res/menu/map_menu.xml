@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MapsActivity">
+
+    <item
+        android:id="@+id/item_option1"
+        android:title="Mapa" />
+
+    <item
+        android:id="@+id/item_option2"
+        android:title="Terreno" />
+
+    <item
+        android:id="@+id/item_option3"
+        android:title="Satelite" />
+
+    <item
+        android:id="@+id/item_option4"
+        android:title="Hibrido" />
+
+</menu>

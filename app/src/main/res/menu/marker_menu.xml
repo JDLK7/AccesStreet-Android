@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_option1"
+        android:title="Escalera" />
+
+    <item
+        android:id="@+id/item_option2"
+        android:title="Obra" />
+
+    <item
+        android:id="@+id/item_option3"
+        android:title="Bordillo" />
+
+    <item
+        android:id="@+id/item_option4"
+        android:title="Pendiente" />
+</menu>
