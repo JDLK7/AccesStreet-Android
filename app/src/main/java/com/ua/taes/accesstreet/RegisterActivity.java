@@ -24,10 +24,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        register = (CardView)findViewById(R.id.registrarse);
-
-        // register.setOnClickListener(this);
     }
 
     public void onClick(View v) {

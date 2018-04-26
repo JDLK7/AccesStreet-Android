@@ -20,11 +20,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-
-        enviar = (CardView)findViewById(R.id.enviar);
-        email = (EditText)findViewById(R.id.correo);
-
-        // enviar.setOnClickListener(this);
     }
 
     public void onClick(View v) {

@@ -63,8 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     myBuild.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
-                            finish();
+                        finish();
                         }
                     });
                 }
