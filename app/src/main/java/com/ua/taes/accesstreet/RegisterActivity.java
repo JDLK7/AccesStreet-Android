@@ -1,10 +1,8 @@
 package com.ua.taes.accesstreet;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,50 +10,48 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
-    CardView logearse;
-    CardView registrarse;
-    TextView forgotPass;
+    CardView register;
+    EditText contrasenya;
+    EditText repetir;
     EditText nombre;
-    EditText contra;
+    EditText email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        logearse = (CardView)findViewById(R.id.login);
-        registrarse = (CardView)findViewById(R.id.signup);
-        forgotPass = (TextView)findViewById(R.id.forgot);
+        register = (CardView)findViewById(R.id.registrarse);
 
-        logearse.setOnClickListener(this);
-        registrarse.setOnClickListener(this);
-        forgotPass.setOnClickListener(this);
+        // register.setOnClickListener(this);
     }
 
-    @Override
     public void onClick(View v) {
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
         CharSequence text;
         Toast toast;
+        String contraV,verificar,nombreV,emailV;
         boolean errores = false;
-        String nombreV,contraV;
+
+        nombre = (EditText)findViewById(R.id.nombre);
+        email = (EditText)findViewById(R.id.email);
+        contrasenya = (EditText)findViewById(R.id.contrasenya);
+        repetir = (EditText)findViewById(R.id.repetirContra);
+
+        nombreV = nombre.getText().toString();
+        emailV = email.getText().toString();
+        contraV = contrasenya.getText().toString();
+        verificar = repetir.getText().toString();
 
         switch (v.getId()) {
 
-            case (R.id.login):
-
-                nombre = (EditText)findViewById(R.id.nombre);
-                contra = (EditText)findViewById(R.id.contra);
-
-                nombreV = nombre.getText().toString();
-                contraV = contra.getText().toString();
+            case (R.id.registrarse):
 
                 if(nombreV.isEmpty()) {
 
@@ -63,72 +59,51 @@ public class Register extends AppCompatActivity {
                     errores = true;
                 }
 
+                if(emailV.isEmpty()) {
+
+                    email.setError("Campo vacío");
+                    errores = true;
+                }
+
                 if(contraV.isEmpty()) {
 
-                    contra.setError("Campo vacío");
+                    contrasenya.setError("Campo vacío");
+                    errores = true;
+                }
+
+                if(verificar.isEmpty()) {
+
+                    repetir.setError("Campo vacío");
+                    errores = true;
+                }
+
+                if(contraV.equals(verificar) == false) {
+
+                    text = "ERROR: Contraseñas diferentes";
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
                     errores = true;
                 }
 
                 if(errores == false) {
 
+                    text = "Usuario registrado exitosamente !";
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
                     //Creamos el Intent
-                    Intent mapa = new Intent(LoginActivity.this, MapsActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
 
                     //Iniciamos la nueva actividad
-                    startActivity(mapa);
+                    startActivity(intent);
                 }
 
                 break;
-
-            case (R.id.signup):
-                //Creamos el Intent
-                Intent intent = new Intent(LoginActivity.this, RegistroUsuario.class);
-
-                //Creamos la informacion a pasar entre actividades
-                Bundle b = new Bundle();
-                b.putString("NOMBRE","");
-
-                //Añadimos la informacion al intent
-                intent.putExtras(b);
-
-                //Iniciamos la nueva actividad
-                startActivity(intent);
-                break;
-
-            case (R.id.forgot):
-                //Creamos el Intent
-                Intent olvidar = new Intent(LoginActivity.this, OlvidarContra.class);
-
-                //Iniciamos la nueva actividad
-                startActivity(olvidar);
-                break;
-
         }
     }
 
     @Override
     public void onBackPressed() {
-
-        AlertDialog.Builder myBuild = new AlertDialog.Builder(this);
-        myBuild.setMessage("¿Seguro que quieres salir de AccessStreet?");
-        myBuild.setTitle("Salir de AccessStreet");
-        myBuild.setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                finish();
-            }
-        });
-
-        myBuild.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog dialog = myBuild.create();
-        dialog.show();
+        this.finish();
     }
 }
