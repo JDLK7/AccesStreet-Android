@@ -2,4 +2,24 @@
     <string name="app_name">AccesStreet</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_login">LoginActivity</string>
+
+    <!-- LOGIN ACTIVITY -->
+    <string name="login_username_label">Nombre de usuario o Correo</string>
+    <string name="login_password_label">Contraseña</string>
+    <string name="login_remember_label">Recuérdame</string>
+    <string name="login_submit_button">Iniciar sesión</string>
+    <string name="login_register_button">Regístrate</string>
+    <string name="login_reset_password_link">¿Olvidaste tu contraseña?</string>
+
+    <!-- REGISTER ACTIVITY -->
+    <string name="register_title">Registro</string>
+    <string name="register_name_label">Nombre de usuario</string>
+    <string name="register_email_label">Correo electrónico</string>
+    <string name="register_password_label">Contraseña</string>
+    <string name="register_password_confirmation_label">Repetir contraseña</string>
+
+    <!-- FORGOT PASSWORD ACTIVITY -->
+    <string name="forgot_password_title">Recordar Contraseña</string>
+    <string name="forgot_password_email_label">Introduce el correo electrónico</string>
+    <string name="forgot_password_submit_button">Enviar</string>
 </resources>
