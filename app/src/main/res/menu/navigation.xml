@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_interest_points"
         android:icon="@drawable/ic_flag_black_24dp"
         android:title="@string/title_interest_point" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_obstacles"
         android:icon="@drawable/ic_bordillo"
         android:title="@string/title_obstacles" />
 
