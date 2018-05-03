@@ -1,13 +1,24 @@
 package taes.accessstreet;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
+import org.json.JSONException;
 
 public class AddAlertActivity extends AppCompatActivity {
 
@@ -53,4 +64,52 @@ public class AddAlertActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void createInterestPoint(View v) {
+        final Intent intent = new Intent(this, MapsActivity.class);
+
+        int type = 0;
+
+        switch (v.getId()) {
+            case R.id.accessiblePark: type = 2;
+                break;
+            case R.id.accessibleWC: type = 3;
+                break;
+            case R.id.accessibleStair: type = 5;
+                break;
+            case R.id.accessibleSlope: type = 6;
+                break;
+        }
+
+        String url = "http://"
+                + getResources().getString(R.string.accesstreet_api_host) + ":"
+                + getResources().getString(R.string.accesstreet_api_port) + "/api/puntos";
+
+        JSONObject payload = new JSONObject();
+
+        try {
+            payload.put("lat", 0);
+            payload.put("lng", 0);
+            payload.put("type", type);
+        }
+        catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+            (Request.Method.POST, url, payload, new Response.Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    finish();
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+        AccesstreetRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
 }
