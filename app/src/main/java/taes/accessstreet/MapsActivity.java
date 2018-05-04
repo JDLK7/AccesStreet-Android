@@ -1,6 +1,7 @@
 package taes.accessstreet;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -166,6 +168,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.finish();
     }
 
+    private void setUpMap() {
+
+        // Find myLocationButton view
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        @SuppressLint("ResourceType") View myLocationButton = mapFragment.getView().findViewById(0x2);
+
+        if (myLocationButton != null && myLocationButton.getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+            // location button is inside of RelativeLayout
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) myLocationButton.getLayoutParams();
+
+            // Align it to - parent BOTTOM|LEFT
+            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+            params.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+
+            // Update margins, set to 10dp
+            final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100,
+                    getResources().getDisplayMetrics());
+            params.setMargins(margin, margin, margin, margin);
+
+            myLocationButton.setLayoutParams(params);
+        }
+    }
+
 
     /**
      * Manipulates the map once available.
@@ -195,11 +222,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         //Placing the button location in the right button
-        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        /*View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        layoutParams.setMargins(0, 0, 30, 300);
+        layoutParams.setMargins(0, 0, 30, 300);*/
+
+        setUpMap();
 
         //Displaying the zoom buttons
         mMap.getUiSettings().setZoomControlsEnabled(true);
