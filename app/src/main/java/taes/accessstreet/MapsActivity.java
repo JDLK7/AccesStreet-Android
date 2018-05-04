@@ -1,6 +1,7 @@
 package taes.accessstreet;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -77,13 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         search_button.setImageResource(R.drawable.ic_menu_black_24px);
         search_button.setOnClickListener(this);
 
-        //Open context menu with marker options
-        //registerForContextMenu(findViewById(R.id.map));
-        //openContextMenu(findViewById(R.id.map));
-
-        //User to verify the output result
-        final TextView txtPlaceDetails = findViewById(R.id.txtPlaceDetails);
-
         //Find the place and add a marker
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -96,7 +91,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         + place.getLatLng().toString() + "\n"
                         + place.getAddress() + "\n";
 
-                txtPlaceDetails.setText(placeDetailsStr);
                 mMap.clear();
                 LatLng coordenadas = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
                 mMap.addMarker(new MarkerOptions().position(coordenadas).title(place.getAddress().toString()));
@@ -121,7 +115,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapLongClick(LatLng point) {
-        //mTapTextView.setText("long pressed, point=" + point);
         registerForContextMenu(findViewById(R.id.map));
         openContextMenu(findViewById(R.id.map));
         ContextPoint = point;
@@ -175,6 +168,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.finish();
     }
 
+    private void setUpMap() {
+
+        // Find myLocationButton view
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        @SuppressLint("ResourceType") View myLocationButton = mapFragment.getView().findViewById(0x2);
+
+        if (myLocationButton != null && myLocationButton.getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+            // location button is inside of RelativeLayout
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) myLocationButton.getLayoutParams();
+
+            // Align it to - parent BOTTOM|LEFT
+            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+            params.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+
+            // Update margins, set to 10dp
+            final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100,
+                    getResources().getDisplayMetrics());
+            params.setMargins(margin, margin, margin, margin);
+
+            myLocationButton.setLayoutParams(params);
+        }
+    }
+
 
     /**
      * Manipulates the map once available.
@@ -204,11 +222,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         //Placing the button location in the right button
-        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        /*View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        layoutParams.setMargins(0, 0, 30, 300);
+        layoutParams.setMargins(0, 0, 30, 300);*/
+
+        setUpMap();
 
         //Displaying the zoom buttons
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -219,8 +239,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Callback declaration for long map click
         mMap.setOnMapLongClickListener(this);
 
-        //Callback declaration for simple map click
+        //Callback declaratio for the simple click
         mMap.setOnMapClickListener(this);
+    }
+
+    @Override
+    public void onMapClick(LatLng destination) {
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(destination.latitude, destination.longitude))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
     }
 
     @Override
@@ -259,244 +287,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Toast.makeText(this, item.toString(), Toast.LENGTH_LONG).show();
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 return true;
-
             default:
                 return false;
         }
     }
-
-    private String getUrl(LatLng origin, LatLng dest) {
-
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-
-        // Destination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-
-        // Sensor enabled
-        String sensor = "sensor=false";
-
-        //Direction mode
-        String mode = "mode=walking";
-
-        String alternatives = "alternatives=true";
-
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode;
-
-        // Output format
-        String output = "json";
-
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-
-
-        return url;
-    }
-
-    // Fetches data from url passed
-    private class FetchUrl extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... url) {
-
-            // For storing data from web service
-            String data = "";
-
-            try {
-                // Fetching the data from web service
-                data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
-            } catch (Exception e) {
-                Log.d("Background Task", e.toString());
-            }
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            ParserTask parserTask = new ParserTask();
-
-            // Invokes the thread for parsing the JSON data
-            parserTask.execute(result);
-
-        }
-    }
-
-    private String downloadUrl(String strUrl) throws IOException {
-        String data = "";
-        InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(strUrl);
-
-            // Creating an http connection to communicate with url
-            urlConnection = (HttpURLConnection) url.openConnection();
-
-            // Connecting to url
-            urlConnection.connect();
-
-            // Reading data from url
-            iStream = urlConnection.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
-            StringBuffer sb = new StringBuffer();
-
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-            data = sb.toString();
-            Log.d("downloadUrl", data.toString());
-            br.close();
-
-        } catch (Exception e) {
-            Log.d("Exception", e.toString());
-        } finally {
-            iStream.close();
-            urlConnection.disconnect();
-        }
-        return data;
-    }
-
-    @Override
-    public void onMapClick(LatLng point) {
-
-        // Already two locations
-        if (MarkerPoints.size() > 1) {
-            MarkerPoints.clear();
-            mMap.clear();
-        }
-
-        // Adding new item to the ArrayList
-        MarkerPoints.add(point);
-
-        // Creating MarkerOptions
-        MarkerOptions options = new MarkerOptions();
-
-        // Setting the position of the marker
-        options.position(point);
-
-        /**
-         * For the start location, the color of marker is GREEN and
-         * for the end location, the color of marker is RED.
-         */
-        if (MarkerPoints.size() == 1) {
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        } else if (MarkerPoints.size() == 2) {
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-        }
-
-
-        // Add new marker to the Google Map Android API V2
-        mMap.addMarker(options);
-
-        // Checks, whether start and end locations are captured
-        if (MarkerPoints.size() >= 2) {
-            LatLng origin = MarkerPoints.get(0);
-            LatLng dest = MarkerPoints.get(1);
-
-            // Getting URL to the Google Directions API
-            String url = getUrl(origin, dest);
-            Log.d("onMapClick", url.toString());
-            FetchUrl FetchUrl = new FetchUrl();
-
-            // Start downloading json data from Google Directions API
-            FetchUrl.execute(url);
-            //move map camera
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
-            //mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-        }
-
-    }
-
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-
-        // Parsing the data in non-ui thread
-        @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
-
-            JSONObject jObject;
-            List<List<HashMap<String, String>>> routes = null;
-
-            try {
-                jObject = new JSONObject(jsonData[0]);
-                Log.d("ParserTask", jsonData[0].toString());
-                DataParser parser = new DataParser();
-                Log.d("ParserTask", parser.toString());
-
-                // Starts parsing data
-                routes = parser.parse(jObject);
-                Log.d("ParserTask", "Executing routes");
-                Log.d("ParserTask", routes.toString());
-
-            } catch (Exception e) {
-                Log.d("ParserTask", e.toString());
-                e.printStackTrace();
-            }
-            return routes;
-        }
-
-        // Executes in UI thread, after the parsing process
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-            ArrayList<LatLng> points;
-            PolylineOptions lineOptions = null;
-
-            // Traversing through all the routes
-            for (int i = 0; i < result.size(); i++) {
-                points = new ArrayList<>();
-                lineOptions = new PolylineOptions();
-
-                // Fetching i-th route
-                List<HashMap<String, String>> path = result.get(i);
-
-                // Fetching all the points in i-th route
-                for (int j = 0; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
-
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-
-                    points.add(position);
-                }
-
-                // Adding all the points in the route to LineOptions
-                lineOptions.addAll(points);
-                lineOptions.width(10);
-                lineOptions.color(Color.RED);
-
-                Log.d("onPostExecute", "onPostExecute lineoptions decoded");
-
-            }
-
-            // Drawing polyline in the Google Map for the i-th route
-            if (lineOptions != null) {
-                mMap.addPolyline(lineOptions);
-            } else {
-                Log.d("onPostExecute", "without Polylines drawn");
-            }
-        }
-    }
-
-    public static double distanciaCoord(double lat1, double lng1, double lat2, double lng2) {
-        //double radioTierra = 3958.75;//en millas
-        double radioTierra = 6371;//en kilómetros
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lng2 - lng1);
-        double sindLat = Math.sin(dLat / 2);
-        double sindLng = Math.sin(dLng / 2);
-        double va1 = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
-                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
-        double va2 = 2 * Math.atan2(Math.sqrt(va1), Math.sqrt(1 - va1));
-        double distancia = radioTierra * va2;
-
-        return distancia;
-    }
-
 }
