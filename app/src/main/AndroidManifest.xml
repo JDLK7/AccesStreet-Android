@@ -41,6 +41,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -51,7 +52,10 @@
         <activity
             android:name=".PasswordResetActivity"
             android:label="@string/title_activity_password_reset"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddAlertActivity"
+            android:label="@string/title_activity_add_alert"></activity>
     </application>
 
 </manifest>

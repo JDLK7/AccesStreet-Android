@@ -4,6 +4,10 @@
     <string name="google_maps_key"></string>
     <string name="title_activity_login">LoginActivity</string>
 
+    <!-- DATOS DE CONEXIÓN AL API -->
+    <string name="accesstreet_api_host">192.168.43.30</string>
+    <string name="accesstreet_api_port">8000</string>
+
     <!-- LOGIN ACTIVITY -->
     <string name="login_username_label">Nombre de usuario o Correo</string>
     <string name="login_password_label">Contraseña</string>
@@ -26,4 +30,13 @@
     <string name="forgot_password_submit_button">Enviar</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_password_reset">PasswordResetActivity</string>
+
+    <!-- ADD ALERT ACTIVITY -->
+    <string name="title_activity_add_alert">Añadir aviso</string>
+    <string name="title_interest_point">Puntos de interés</string>
+    <string name="title_obstacles">Obstáculos</string>
+    <string name="disabled_park_card">Plaza de aparcamiento adaptada</string>
+    <string name="disabled_wc_card">Cuarto de baño adaptado</string>
+    <string name="disabled_stair_card">Escalera adaptada</string>
+    <string name="disabled_slope_card">Rampa de acceso adaptada</string>
 </resources>

@@ -3,4 +3,18 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#fff</color>
+
+    <!-- COLORES DE PUNTOS DE INTERÉS -->
+    <color name="colorAccessibleParkAlert">#2196F3</color>
+    <color name="colorAccessibleWCAlert">#00BCD4</color>
+    <color name="colorAccessibleStairAlert">#E91E63</color>
+    <color name="colorAccessibleSlopeAlert">#9C27B0</color>
+
+    <!-- COLORES DE OBSTÁCULOS -->
+    <color name="colorObstacleWorks">#795548</color>
+    <color name="colorObstacleSlope">#FF5722</color>
+    <color name="colorObstacleStair">#9E9E9E</color>
+    <color name="colorObstacleSidewalk">#B71C1C</color>
 </resources>
