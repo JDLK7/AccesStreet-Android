@@ -92,7 +92,7 @@ public class AddAlertActivity extends AppCompatActivity {
         for (int i = 0; i < types.length(); i++) {
             JSONObject type = types.getJSONObject(i);
 
-            String currentType = type.getString("name");
+            String currentType = type.getString("reference");
 
             if (selectedType.equals(currentType)) {
                 selectedTypeId = type.getInt("id");
@@ -117,7 +117,7 @@ public class AddAlertActivity extends AppCompatActivity {
      * @param v objeto de la interfaz pulsado.
      * @throws JSONException
      */
-    public void createInterestPoint(View v) throws JSONException {
+    public void createAlert(View v, final boolean isInterestPoint) throws JSONException {
 
         String selectedType = String.valueOf(v.getTag());
         int selectedTypeId = getAlertId(selectedType);
@@ -140,7 +140,11 @@ public class AddAlertActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(JSONObject response) {
-                    Toast toast = Toast.makeText(getApplicationContext(), R.string.message_alert_created, Toast.LENGTH_SHORT);
+                    String message = getResources().getString(isInterestPoint
+                            ? R.string.message_interest_point_created
+                            : R.string.message_obstacle_created);
+
+                    Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
                     toast.show();
                     finish();
                 }
@@ -153,5 +157,13 @@ public class AddAlertActivity extends AppCompatActivity {
             });
 
         AccesstreetRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void createInterestPoint(View v) throws JSONException {
+        createAlert(v, true);
+    }
+
+    public void createObstacle(View v) throws JSONException {
+        createAlert(v, false);
     }
 }
