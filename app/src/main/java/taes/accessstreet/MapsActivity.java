@@ -16,10 +16,10 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -32,20 +32,24 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+class ListaPuntos {
+    public String name;
+    public ArrayList<MarkerOptions> puntos;
+
+    public ListaPuntos(String name) {
+        this.name = name;
+        puntos = new ArrayList<>();
+    }
+}
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMapClickListener {
 
@@ -54,6 +58,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private View mapView;
     ArrayList<LatLng> MarkerPoints;
     private LatLng ContextPoint;
+
+    private ArrayList<ListaPuntos> marcadores = new ArrayList<>();
+    private Marker marcador;
+    double lat = 0.0;
+    double lgn = 0.0;
+    String ip = "http://52.143.142.13:8000";
+    String urlObjetos = ip + "/api/tiposTodos";
+    private double latitudInicial;
+    private double longitudInicial;
+    private double latitudFinal;
+    private double longitudFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,6 +256,132 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Callback declaratio for the simple click
         mMap.setOnMapClickListener(this);
+
+        PeticionObjetos hiloConexionTodos = new PeticionObjetos();
+        hiloConexionTodos.execute(urlObjetos);
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                System.out.println("Has pulsado en el icono: " + marker.getTitle());
+                return false;
+            }
+        });
+
+        if(latitudFinal == 0.0 && longitudFinal == 0.0) {
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+
+                    latitudFinal = latLng.latitude;
+                    longitudFinal = latLng.longitude;
+                    LatLng coordenada = new LatLng(latitudFinal,longitudFinal);
+
+                    MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+                    mark.title("Destino");
+                    mark.snippet("Prueba destino");
+                    mMap.addMarker(mark);
+                }
+            });
+        }
+    }
+
+    /**
+     * Clase auxiliar que pedirá todos los puntos al servidor y los mostrará en el mapa
+     */
+    public class PeticionObjetos extends AsyncTask<String,Void,String> {
+
+        /**
+         * hace la peticion al servidor y devuelve su respuesta
+         * @param url url del servidor
+         * @return respuesta del servidor
+         */
+        @Override
+        protected String doInBackground(String... url) {
+            HttpHandler sh = new HttpHandler();
+            String urlServer = url[0];
+            return sh.makeServiceCall(urlServer);
+            //return null;
+        }
+
+        /**
+         * Transforma el json del servidor en puntos en el mapa
+         * @param jsonStr respuesta del servidor en formato json
+         */
+        @Override
+        protected void onPostExecute(String jsonStr) {
+            if(jsonStr != null){
+                try {
+                    JSONArray vector = new JSONArray(jsonStr);
+                    for (int i = 0; i < vector.length(); i++) {
+                        JSONObject tipo = vector.getJSONObject(i);
+                        String id = tipo.getString("id");
+                        String name = tipo.getString("name");
+
+                        ListaPuntos lista = new ListaPuntos(name);
+
+                        JSONArray misPuntos= tipo.getJSONArray("puntos");
+                        String puntosLeidos;
+                        for (int j = 0; j <misPuntos.length() ; j++) {
+                            puntosLeidos = misPuntos.getString(j);
+                            //System.out.println("Punto leido: "+puntosLeidos);
+                            String[] coords = puntosLeidos.split(",");
+                            Double lat = Double.parseDouble(coords[1]);
+                            Double lng = Double.parseDouble(coords[0]);
+                            LatLng coordenada = new LatLng(lat, lng);
+
+                            // Semaforos acusticos
+                            if(id.equals("1")) {
+
+                            }
+
+                            else {
+
+                                // Parking discapacitados
+                                if(id.equals("2")) {
+
+                                    MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+                                    mark.title(name);
+                                    mark.snippet(name);
+                                    lista.puntos.add(mark);
+                                    mMap.addMarker(mark);
+                                }
+
+                                else {
+
+                                    // Baños adaptados
+                                    if(id.equals("3")) {
+
+                                        MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+                                        mark.title(name);
+                                        mark.snippet(name);
+                                        lista.puntos.add(mark);
+                                        mMap.addMarker(mark);
+                                    }
+
+                                    else {
+
+                                        // Ascensores
+                                        if(id.equals("4")) {
+
+                                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+                                            mark.title(name);
+                                            mark.snippet(name);
+                                            lista.puntos.add(mark);
+                                            mMap.addMarker(mark);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        marcadores.add(lista);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
