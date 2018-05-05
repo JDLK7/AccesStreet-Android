@@ -16,12 +16,14 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.text.style.EasyEditSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -40,6 +42,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -194,6 +198,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.finish();
     }
 
+    /**
+     * Este metodo lo que hace es reubicar el boton de my location
+     *  y se adapta al aspect ratio de la pantalla de cada dispositivo
+     */
     private void setUpMap() {
         // Find myLocationButton view
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -351,16 +359,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapClick(LatLng destination) {
+        mMap.clear(); //Esto de momento lo dejamos para poder realizar las pruebas
         if (destino != null) destino.remove();
         destino = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(destination.latitude, destination.longitude))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         GPSTracking gps = new GPSTracking(getApplicationContext());
-        System.out.println(gps.getLat() + ":" + gps.getLng());
+        System.out.println("******************** Origen --> " + gps.getLng() + ":" + gps.getLat());
+        System.out.println("******************** Destino --> " + destination.longitude + ":" + destination.latitude);
         getRoute(new LatLng(gps.getLat(), gps.getLng()), destination);
     }
 
     public void getRoute(LatLng origin, LatLng destination) {
+        System.out.println("*************** Dibujando la polilinea *******************");
+
+        origin = new LatLng(38.383446, -0.515578);
+        Route ruta = new Route(origin, destination,mMap);
+        /*ArrayList<String> coordenadas = ruta.getCoordenadas();
+
+        System.out.println("Coordenadas" + coordenadas);
+        PolylineOptions rectOptions = new PolylineOptions()
+                .width(10)
+                .color(Color.RED);
+
+        for (int i = 0; i < coordenadas.size(); i++) {
+            System.out.println("Latitud " + coordenadas.get(i+1) + "Longitud " + coordenadas.get(i));
+            rectOptions.add(new LatLng(Double.parseDouble(coordenadas.get(i+1)), Double.parseDouble(coordenadas.get(i))));
+            i = i+3;
+        }
+
+        Polyline polyline = mMap.addPolyline(rectOptions); // Get back the mutable Polyline*/
 
     }
 
