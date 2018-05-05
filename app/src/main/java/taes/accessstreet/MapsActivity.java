@@ -2,11 +2,17 @@ package taes.accessstreet;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -59,6 +65,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ArrayList<LatLng> MarkerPoints;
     private LatLng ContextPoint;
 
+    private Marker destino;
+    LocationManager locationManager; //Declaring a Location Manager
+    private static final long LOCATION_REFRESH_DISTANCE = 1; // The minimum distance to change Updates in meters --> 10 meters
+    private static final long LOCATION_REFRESH_TIME = 1; // The minimum time between updates in milliseconds
+
     private ArrayList<ListaPuntos> marcadores = new ArrayList<>();
     private Marker marcador;
     double lat = 0.0;
@@ -70,6 +81,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double latitudFinal;
     private double longitudFinal;
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,11 +91,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //Getting map view
-        mapView = mapFragment.getView();
-
-        //Inicializar el vector de marker points
-        MarkerPoints = new ArrayList<>();
+        mapView = mapFragment.getView(); //Getting map view
+        MarkerPoints = new ArrayList<>(); //Inicializar el vector de marker points
 
         //Autocomplete search bar
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -93,6 +102,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ImageView search_button = (ImageView) findViewById(R.id.place_autocomplete_search_button);
         search_button.setImageResource(R.drawable.ic_menu_black_24px);
         search_button.setOnClickListener(this);
+
+
 
         //Find the place and add a marker
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -184,7 +195,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void setUpMap() {
-
         // Find myLocationButton view
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         @SuppressLint("ResourceType") View myLocationButton = mapFragment.getView().findViewById(0x2);
@@ -222,7 +232,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Spain and move the camera
+        // Add a marker in Spain and move the camera just an example
         LatLng spain = new LatLng(40, -3);
         mMap.addMarker(new MarkerOptions().position(spain).title("Marker in Spain"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(spain));
@@ -236,54 +246,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         }
 
-        //Placing the button location in the right button
-        /*View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        layoutParams.setMargins(0, 0, 30, 300);*/
-
-        setUpMap();
-
-        //Displaying the zoom buttons
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-
-        //Enable zoom gestures (pinch gestures)
-        mMap.getUiSettings().setZoomGesturesEnabled(true);
-
-        //Callback declaration for long map click
-        mMap.setOnMapLongClickListener(this);
-
-        //Callback declaratio for the simple click
-        mMap.setOnMapClickListener(this);
+        setUpMap(); //Placing location button
+        mMap.getUiSettings().setZoomControlsEnabled(true); //Displaying the zoom buttons
+        mMap.getUiSettings().setZoomGesturesEnabled(true); //Enable zoom gestures (pinch gestures)
+        mMap.setOnMapLongClickListener(this); //Callback declaration for long map click
+        mMap.setOnMapClickListener(this); //Callback declaration for the simple click
 
         PeticionObjetos hiloConexionTodos = new PeticionObjetos();
         hiloConexionTodos.execute(urlObjetos);
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                System.out.println("Has pulsado en el icono: " + marker.getTitle());
-                return false;
-            }
-        });
-
-        if(latitudFinal == 0.0 && longitudFinal == 0.0) {
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-
-                    latitudFinal = latLng.latitude;
-                    longitudFinal = latLng.longitude;
-                    LatLng coordenada = new LatLng(latitudFinal,longitudFinal);
-
-                    MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-                    mark.title("Destino");
-                    mark.snippet("Prueba destino");
-                    mMap.addMarker(mark);
-                }
-            });
-        }
     }
 
     /**
@@ -306,11 +276,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         /**
          * Transforma el json del servidor en puntos en el mapa
+         *
          * @param jsonStr respuesta del servidor en formato json
          */
         @Override
         protected void onPostExecute(String jsonStr) {
-            if(jsonStr != null){
+            if (jsonStr != null) {
                 try {
                     JSONArray vector = new JSONArray(jsonStr);
                     for (int i = 0; i < vector.length(); i++) {
@@ -320,9 +291,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         ListaPuntos lista = new ListaPuntos(name);
 
-                        JSONArray misPuntos= tipo.getJSONArray("puntos");
+                        JSONArray misPuntos = tipo.getJSONArray("puntos");
                         String puntosLeidos;
-                        for (int j = 0; j <misPuntos.length() ; j++) {
+                        for (int j = 0; j < misPuntos.length(); j++) {
                             puntosLeidos = misPuntos.getString(j);
                             //System.out.println("Punto leido: "+puntosLeidos);
                             String[] coords = puntosLeidos.split(",");
@@ -331,38 +302,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             LatLng coordenada = new LatLng(lat, lng);
 
                             // Semaforos acusticos
-                            if(id.equals("1")) {
+                            if (id.equals("1")) {
 
-                            }
-
-                            else {
+                            } else {
 
                                 // Parking discapacitados
-                                if(id.equals("2")) {
+                                if (id.equals("2")) {
 
                                     MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
                                     mark.title(name);
                                     mark.snippet(name);
                                     lista.puntos.add(mark);
                                     mMap.addMarker(mark);
-                                }
-
-                                else {
+                                } else {
 
                                     // Baños adaptados
-                                    if(id.equals("3")) {
+                                    if (id.equals("3")) {
 
                                         MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
                                         mark.title(name);
                                         mark.snippet(name);
                                         lista.puntos.add(mark);
                                         mMap.addMarker(mark);
-                                    }
-
-                                    else {
+                                    } else {
 
                                         // Ascensores
-                                        if(id.equals("4")) {
+                                        if (id.equals("4")) {
 
                                             MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
                                             mark.title(name);
@@ -386,10 +351,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapClick(LatLng destination) {
-        mMap.clear();
-        mMap.addMarker(new MarkerOptions()
+        if (destino != null) destino.remove();
+        destino = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(destination.latitude, destination.longitude))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        GPSTracking gps = new GPSTracking(getApplicationContext());
+        System.out.println(gps.getLat() + ":" + gps.getLng());
+        getRoute(new LatLng(gps.getLat(), gps.getLng()), destination);
+    }
+
+    public void getRoute(LatLng origin, LatLng destination) {
+
     }
 
     @Override
