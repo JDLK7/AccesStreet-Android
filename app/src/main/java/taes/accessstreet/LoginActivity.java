@@ -35,11 +35,16 @@ public class LoginActivity extends AppCompatActivity {
     EditText contra;
     RequestQueue requestQueue;
     StringRequest request;
-    String urlObjetos = "http://uaccesible.francecentral.cloudapp.azure.com/api/user/";
+    String urlObjetos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        urlObjetos = "http://"
+                + getResources().getString(R.string.accesstreet_api_host) + ":"
+                + getResources().getString(R.string.accesstreet_api_port) + "/api/user/";
+
         setContentView(R.layout.activity_login);
         requestQueue = Volley.newRequestQueue(this);
     }
