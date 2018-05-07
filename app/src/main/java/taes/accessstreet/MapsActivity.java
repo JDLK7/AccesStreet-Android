@@ -144,9 +144,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapLongClick(LatLng point) {
-        registerForContextMenu(findViewById(R.id.map));
-        openContextMenu(findViewById(R.id.map));
-        ContextPoint = point;
+        Intent addAlertActivity = new Intent(this, AddAlertActivity.class);
+        addAlertActivity.putExtra("pointLat", point.latitude);
+        addAlertActivity.putExtra("pointLng", point.longitude);
+        startActivity(addAlertActivity);
+
+        // registerForContextMenu(findViewById(R.id.map));
+        // openContextMenu(findViewById(R.id.map));
+        // ContextPoint = point;
     }
 
     @Override

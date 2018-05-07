@@ -28,6 +28,9 @@ public class AddAlertActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
+    private Double pointLat;
+    private Double pointLng;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -57,6 +60,9 @@ public class AddAlertActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_alert);
+
+        pointLat = this.getIntent().getDoubleExtra("pointLat", 0.0f);
+        pointLng = this.getIntent().getDoubleExtra("pointLng", 0.0f);
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -122,6 +128,12 @@ public class AddAlertActivity extends AppCompatActivity {
         String selectedType = String.valueOf(v.getTag());
         int selectedTypeId = getAlertId(selectedType);
 
+        if (pointLat.equals(0.0f) && pointLng.equals(0.0f)) {
+            GPSTracking gps = new GPSTracking(getApplicationContext());
+            pointLat = gps.getLat();
+            pointLng = gps.getLng();
+        }
+
         /**
          * Se prepara el JSON de respuesta y se realiza una petición POST
          * al servidor para crear el nuevo aviso en el servicio web.
@@ -131,8 +143,8 @@ public class AddAlertActivity extends AppCompatActivity {
                 + getResources().getString(R.string.accesstreet_api_port) + "/api/puntos";
 
         JSONObject payload = new JSONObject();
-        payload.put("lat", 0);
-        payload.put("lng", 0);
+        payload.put("lat", pointLat);
+        payload.put("lng", pointLng);
         payload.put("type", selectedTypeId);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
