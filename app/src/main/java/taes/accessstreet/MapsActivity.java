@@ -78,8 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker marcador;
     double lat = 0.0;
     double lgn = 0.0;
-    String ip = "http://52.143.142.13:8000";
-    String urlObjetos = ip + "/api/tiposTodos";
+    String urlObjetos = "http://uaccesible.francecentral.cloudapp.azure.com/api/tiposTodos";
     private double latitudInicial;
     private double longitudInicial;
     private double latitudFinal;

@@ -12,7 +12,7 @@ import android.support.v7.widget.CardView;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     CardView register;
     EditText contrasenya;
@@ -23,9 +23,15 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.content_register);
+
+        register = (CardView)findViewById(R.id.registrarse);
+
+        register.setOnClickListener(this);
+
     }
 
+    @Override
     public void onClick(View v) {
 
         Context context = getApplicationContext();
@@ -88,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
                     toast.show();
 
                     //Creamos el Intent
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(this, LoginActivity.class);
 
                     //Iniciamos la nueva actividad
                     startActivity(intent);
@@ -100,6 +106,31 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        this.finish();
+
+        AlertDialog.Builder myBuild = new AlertDialog.Builder(this);
+        myBuild.setMessage("¿Seguro que quieres salir de AccessStreet?");
+        myBuild.setTitle("Salir de AccessStreet");
+        myBuild.setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+            }
+        });
+
+        myBuild.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog dialog = myBuild.create();
+        dialog.show();
     }
 }
