@@ -12,6 +12,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
     CardView logearse;
@@ -19,11 +33,15 @@ public class LoginActivity extends AppCompatActivity {
     TextView forgotPass;
     EditText nombre;
     EditText contra;
+    RequestQueue requestQueue;
+    StringRequest request;
+    String urlObjetos = "http://uaccesible.francecentral.cloudapp.azure.com/api/user/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        requestQueue = Volley.newRequestQueue(this);
     }
 
     public void onClick(View v) {
@@ -57,12 +75,59 @@ public class LoginActivity extends AppCompatActivity {
                     errores = true;
                 }
 
-                if(!errores) {
-                    //Creamos el Intent
-                    Intent main = new Intent(this, MainActivity.class);
+                if(errores == false) {
 
-                    //Iniciamos la nueva actividad
-                    startActivity(main);
+                    urlObjetos += nombre.getText().toString() + "-" + contra.getText().toString();
+
+                    request = new StringRequest(Request.Method.POST, urlObjetos, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            //System.out.println(response);
+
+                            try {
+
+                                JSONObject jsonObject = new JSONObject(response);
+                                if(jsonObject.names().get(0).equals("success")) {
+
+
+                                    Toast.makeText(getApplicationContext(),"SUCCESS " + jsonObject.getString("success"),Toast.LENGTH_SHORT).show();
+
+                                    //Creamos el Intent
+                                    Intent mapa = new Intent(LoginActivity.this, MainActivity.class);
+
+                                    //Iniciamos la nueva actividad
+                                    startActivity(mapa);
+
+                                }
+
+                                else {
+
+                                    Toast.makeText(getApplicationContext(),"Inutil", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String,String> hashMap = new HashMap<String,String>();
+
+                            hashMap.put("name",nombre.getText().toString());
+                            hashMap.put("password",contra.getText().toString());
+
+                            return hashMap;
+                        }
+                    };
+
+                    requestQueue.add(request);
+
                 }
 
                 break;

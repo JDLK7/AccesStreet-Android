@@ -12,20 +12,44 @@ import android.support.v7.widget.CardView;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class RegisterActivity extends AppCompatActivity {
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     CardView register;
     EditText contrasenya;
     EditText repetir;
     EditText nombre;
     EditText email;
+    RequestQueue requestQueue;
+    StringRequest request;
+    String urlObjetos = "http://uaccesible.francecentral.cloudapp.azure.com/api/user/register/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.content_register);
+
+        register = (CardView)findViewById(R.id.registrarse);
+
+        register.setOnClickListener(this);
+        requestQueue = Volley.newRequestQueue(this);
+
     }
 
+    @Override
     public void onClick(View v) {
 
         Context context = getApplicationContext();
@@ -83,15 +107,62 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(errores == false) {
 
-                    text = "Usuario registrado exitosamente !";
-                    toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    urlObjetos += nombre.getText().toString() + "-" + email.getText().toString() + "-" + contrasenya.getText().toString();
 
-                    //Creamos el Intent
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    request = new StringRequest(Request.Method.POST, urlObjetos, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
-                    //Iniciamos la nueva actividad
-                    startActivity(intent);
+                            try {
+
+                                JSONObject jsonObject = new JSONObject(response);
+
+                                //.out.println(response);
+
+
+                                if(jsonObject.names().get(0).equals("success")) {
+
+
+                                    Toast.makeText(getApplicationContext(),"SUCCESS " + jsonObject.getString("success"),Toast.LENGTH_SHORT).show();
+
+                                    //Creamos el Intent
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+
+                                    //Iniciamos la nueva actividad
+                                    startActivity(intent);
+
+                                }
+
+                                else {
+
+                                    // Toast.makeText(getApplicationContext(),"ERROR: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String,String> hashMap = new HashMap<String,String>();
+
+                            hashMap.put("name",nombre.getText().toString());
+                            hashMap.put("email",email.getText().toString());
+                            hashMap.put("password",contrasenya.getText().toString());
+
+                            return hashMap;
+                        }
+                    };
+
+                    requestQueue.add(request);
+
                 }
 
                 break;
@@ -100,6 +171,31 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        this.finish();
+
+        AlertDialog.Builder myBuild = new AlertDialog.Builder(this);
+        myBuild.setMessage("¿Seguro que quieres salir de AccessStreet?");
+        myBuild.setTitle("Salir de AccessStreet");
+        myBuild.setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+            }
+        });
+
+        myBuild.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog dialog = myBuild.create();
+        dialog.show();
     }
 }
