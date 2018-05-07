@@ -78,7 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker marcador;
     double lat = 0.0;
     double lgn = 0.0;
-    String urlObjetos = "http://uaccesible.francecentral.cloudapp.azure.com/api/tiposTodos";
+    String urlObjetos;
     private double latitudInicial;
     private double longitudInicial;
     private double latitudFinal;
@@ -88,6 +88,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        urlObjetos = "http://"
+                + getResources().getString(R.string.accesstreet_api_host) + ":"
+                + getResources().getString(R.string.accesstreet_api_port) + "/api/tiposTodos";
+
         setContentView(R.layout.activity_maps);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -239,6 +244,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        mMap.setPadding(0,0,25, 140);
 
         // Add a marker in Spain and move the camera just an example
         LatLng spain = new LatLng(40, -3);
@@ -417,11 +424,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void showMenu(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
-        // This activity implements OnMenuItemClickListener
-        popup.setOnMenuItemClickListener(this);
-        popup.inflate(R.menu.map_menu);
-        popup.show();
+        Intent intent = new Intent(this, AddAlertActivity.class);
+        startActivity(intent);
     }
 
     @Override
