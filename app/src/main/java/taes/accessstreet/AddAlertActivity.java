@@ -28,8 +28,9 @@ public class AddAlertActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
-    private Double pointLat;
-    private Double pointLng;
+    private final double delta = 0.0000001;
+    private double pointLat;
+    private double pointLng;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -128,7 +129,7 @@ public class AddAlertActivity extends AppCompatActivity {
         String selectedType = String.valueOf(v.getTag());
         int selectedTypeId = getAlertId(selectedType);
 
-        if (pointLat.equals(0.0f) && pointLng.equals(0.0f)) {
+        if ((pointLat - 0.0f) <= delta && (pointLng - 0.0f) <= delta) {
             GPSTracking gps = new GPSTracking(getApplicationContext());
             pointLat = gps.getLat();
             pointLng = gps.getLng();
