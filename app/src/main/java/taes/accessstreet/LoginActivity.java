@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
 
-                            //System.out.println(response);
+                            String aux = "http://uaccesible.francecentral.cloudapp.azure.com/api/user/";
 
                             try {
 
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if(jsonObject.names().get(0).equals("success")) {
 
 
-                                    Toast.makeText(getApplicationContext(),"SUCCESS " + jsonObject.getString("success"),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"SUCCESS !!",Toast.LENGTH_SHORT).show();
 
                                     //Creamos el Intent
                                     Intent mapa = new Intent(LoginActivity.this, MainActivity.class);
@@ -108,11 +108,13 @@ public class LoginActivity extends AppCompatActivity {
 
                                 else {
 
-                                    Toast.makeText(getApplicationContext(),"Inutil", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"ERROR: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
+                                    urlObjetos = aux;
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+
                         }
                     }, new Response.ErrorListener() {
                         @Override
