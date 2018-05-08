@@ -266,7 +266,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomGesturesEnabled(true); //Enable zoom gestures (pinch gestures)
         mMap.setOnMapLongClickListener(this); //Callback declaration for long map click
         mMap.setOnMapClickListener(this); //Callback declaration for the simple click
-        
+
         PeticionObjetos hiloConexionTodos = new PeticionObjetos();
         hiloConexionTodos.execute(urlObjetos);
     }
