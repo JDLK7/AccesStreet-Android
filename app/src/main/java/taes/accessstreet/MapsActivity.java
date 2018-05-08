@@ -331,43 +331,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Double lng = Double.parseDouble(coords[0]);
                             LatLng coordenada = new LatLng(lat, lng);
 
-                            // Semaforos acusticos
-                            if (id.equals("1")) {
-
-                            } else {
-
-                                // Parking discapacitados
-                                if (id.equals("2")) {
-
-                                    MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-                                    mark.title(name);
-                                    mark.snippet(name);
-                                    lista.puntos.add(mark);
-                                    mMap.addMarker(mark);
-                                } else {
-
-                                    // Baños adaptados
-                                    if (id.equals("3")) {
-
-                                        MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-                                        mark.title(name);
-                                        mark.snippet(name);
-                                        lista.puntos.add(mark);
-                                        mMap.addMarker(mark);
-                                    } else {
-
-                                        // Ascensores
-                                        if (id.equals("4")) {
-
-                                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-                                            mark.title(name);
-                                            mark.snippet(name);
-                                            lista.puntos.add(mark);
-                                            mMap.addMarker(mark);
-                                        }
-                                    }
-                                }
-                            }
+                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+                            mark.title(name);
+                            mark.snippet(name);
+                            lista.puntos.add(mark);
+                            mMap.addMarker(mark);
                         }
                         marcadores.add(lista);
                     }
