@@ -56,7 +56,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddAlertActivity"
-            android:label="@string/title_activity_add_alert"></activity>
+            android:label="@string/title_activity_add_alert" />
+        <activity
+            android:name=".PreferencesActivity"
+            android:label="PreferencesActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
