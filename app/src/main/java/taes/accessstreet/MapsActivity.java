@@ -303,6 +303,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         JSONObject tipo = vector.getJSONObject(i);
                         String id = tipo.getString("id");
                         String name = tipo.getString("name");
+                        String iconName = tipo.getString("icon");
 
                         ListaPuntos lista = new ListaPuntos(name);
 
@@ -316,7 +317,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Double lng = Double.parseDouble(coords[0]);
                             LatLng coordenada = new LatLng(lat, lng);
 
-                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+                            int iconId = getResources().getIdentifier(iconName, "drawable", getPackageName());
+
+                            if (iconId == 0) {
+                                iconId = R.drawable.user;
+                            }
+
+                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId));
                             mark.title(name);
                             mark.snippet(name);
                             lista.puntos.add(mark);
