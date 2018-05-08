@@ -113,12 +113,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onResponse(String response) {
 
+                            String aux = "http://uaccesible.francecentral.cloudapp.azure.com/api/user/register/";
+
                             try {
 
                                 JSONObject jsonObject = new JSONObject(response);
-
-                                //.out.println(response);
-
 
                                 if(jsonObject.names().get(0).equals("success")) {
 
@@ -135,7 +134,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                                 else {
 
-                                    // Toast.makeText(getApplicationContext(),"ERROR: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"ERROR: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
+                                    urlObjetos = aux;
                                 }
 
                             } catch (JSONException e) {

@@ -259,23 +259,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapLongClickListener(this); //Callback declaration for long map click
         mMap.setOnMapClickListener(this); //Callback declaration for the simple click
 
-        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-            android.support.v7.app.AlertDialog.Builder myBuild = new android.support.v7.app.AlertDialog.Builder(this);
-            myBuild.setMessage("Para continuar, activa la ubicación del dispositivo");
-            myBuild.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    dialog.cancel();
-
-                }
-            });
-
-            android.support.v7.app.AlertDialog dialog = myBuild.create();
-            dialog.show();
-        }
-
         PeticionObjetos hiloConexionTodos = new PeticionObjetos();
         hiloConexionTodos.execute(urlObjetos);
     }
