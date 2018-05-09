@@ -139,7 +139,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.place_autocomplete_search_button:
-                showMenu(v);
+                Intent intent = new Intent();
+                intent.setClass(MapsActivity.this, OptionsActivity.class);
+                startActivity(intent);
         }
     }
 

@@ -45,4 +45,9 @@
     <string name="disabled_slope_card">Rampa de acceso adaptada</string>
     <string name="message_interest_point_created">Punto de interés creado</string>
     <string name="message_obstacle_created">Obstáculo creado</string>
+
+    <!-- OPTIONS ACTIVITY -->
+    <string name="title_options">Opciones</string>
+    <string name="exit_options">Salir de la aplicación</string>
+    <string name="escaleras">Escaleras</string>
 </resources>
