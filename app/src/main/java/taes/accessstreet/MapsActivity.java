@@ -70,9 +70,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng ContextPoint;
 
     private Marker destino;
-    LocationManager locationManager; //Declaring a Location Manager
-    private static final long LOCATION_REFRESH_DISTANCE = 1; // The minimum distance to change Updates in meters --> 10 meters
-    private static final long LOCATION_REFRESH_TIME = 1; // The minimum time between updates in milliseconds
+    static Polyline RUTE_LINE;
 
     private ArrayList<ListaPuntos> marcadores = new ArrayList<>();
     private Marker marcador;
@@ -341,7 +339,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapClick(LatLng destination) {
-        mMap.clear(); //Esto de momento lo dejamos para poder realizar las pruebas
+        //mMap.clear(); //Esto de momento lo dejamos para poder realizar las pruebas
         if (destino != null) destino.remove();
         destino = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(destination.latitude, destination.longitude))
@@ -354,24 +352,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void getRoute(LatLng origin, LatLng destination) {
         System.out.println("*************** Dibujando la polilinea *******************");
-
         origin = new LatLng(38.383446, -0.515578);
-        Route ruta = new Route(origin, destination,mMap);
-        /*ArrayList<String> coordenadas = ruta.getCoordenadas();
-
-        System.out.println("Coordenadas" + coordenadas);
-        PolylineOptions rectOptions = new PolylineOptions()
-                .width(10)
-                .color(Color.RED);
-
-        for (int i = 0; i < coordenadas.size(); i++) {
-            System.out.println("Latitud " + coordenadas.get(i+1) + "Longitud " + coordenadas.get(i));
-            rectOptions.add(new LatLng(Double.parseDouble(coordenadas.get(i+1)), Double.parseDouble(coordenadas.get(i))));
-            i = i+3;
-        }
-
-        Polyline polyline = mMap.addPolyline(rectOptions); // Get back the mutable Polyline*/
-
+        if (RUTE_LINE!=null)RUTE_LINE.remove();
+        Route ruta = new Route(origin, destination,mMap, getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port));
     }
 
     @Override
