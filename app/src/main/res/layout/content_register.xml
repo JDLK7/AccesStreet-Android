@@ -34,18 +34,20 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:background="@android:color/transparent"
-        android:drawableStart="@drawable/nuevo"
         android:drawablePadding="12dp"
+        android:drawableStart="@drawable/nuevo"
         android:ems="10"
         android:hint="@string/register_name_label"
         android:inputType="textPersonName"
         android:maxLines="1"
         android:text=""
+        android:textColor="#fff"
         android:textColorHint="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="1.0" />
 
     <View
         android:id="@+id/view3"
@@ -56,6 +58,7 @@
         android:background="#f9d7db"
         app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nombre" />
 
@@ -68,16 +71,18 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="36dp"
         android:background="@android:color/transparent"
-        android:drawableStart="@drawable/correo"
         android:drawablePadding="12dp"
+        android:drawableStart="@drawable/correo"
         android:ems="10"
         android:hint="@string/register_email_label"
         android:inputType="textEmailAddress"
         android:maxLines="1"
         android:text=""
+        android:textColor="#fff"
         android:textColorHint="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
@@ -92,22 +97,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/contrasenya"
         android:layout_width="match_parent"
-        android:layout_height="34dp"
+        android:layout_height="36dp"
         android:layout_marginBottom="228dp"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="36dp"
         android:background="@android:color/transparent"
-        android:drawableStart="@drawable/clave"
         android:drawablePadding="12dp"
+        android:drawableStart="@drawable/clave"
         android:ems="10"
         android:hint="@string/register_password_label"
         android:inputType="textPassword"
+        android:textColor="#fff"
         android:textColorHint="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -125,7 +132,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contrasenya" />
+        app:layout_constraintTop_toBottomOf="@+id/contrasenya"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/repetirContra"
@@ -139,6 +147,7 @@
         android:drawableStart="@drawable/llave"
         android:drawablePadding="12dp"
         android:ems="10"
+        android:textColor="#fff"
         android:hint="@string/register_password_confirmation_label"
         android:inputType="textPassword"
         android:text=""

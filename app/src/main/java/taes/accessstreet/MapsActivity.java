@@ -70,16 +70,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng ContextPoint;
 
     private Marker destino;
-    LocationManager locationManager; //Declaring a Location Manager
-    private static final long LOCATION_REFRESH_DISTANCE = 1; // The minimum distance to change Updates in meters --> 10 meters
-    private static final long LOCATION_REFRESH_TIME = 1; // The minimum time between updates in milliseconds
+    static Polyline RUTE_LINE;
 
     private ArrayList<ListaPuntos> marcadores = new ArrayList<>();
     private Marker marcador;
     double lat = 0.0;
     double lgn = 0.0;
-    String ip = "http://52.143.142.13:8000";
-    String urlObjetos = ip + "/api/tiposTodos";
+    String urlObjetos;
     private double latitudInicial;
     private double longitudInicial;
     private double latitudFinal;
@@ -89,6 +86,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        urlObjetos = "http://"
+                + getResources().getString(R.string.accesstreet_api_host) + ":"
+                + getResources().getString(R.string.accesstreet_api_port) + "/api/tiposTodos";
+
         setContentView(R.layout.activity_maps);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -121,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         + place.getLatLng().toString() + "\n"
                         + place.getAddress() + "\n";
 
-                mMap.clear();
+                //mMap.clear();
                 LatLng coordenadas = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
                 mMap.addMarker(new MarkerOptions().position(coordenadas).title(place.getAddress().toString()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(coordenadas));
@@ -147,9 +149,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapLongClick(LatLng point) {
-        registerForContextMenu(findViewById(R.id.map));
-        openContextMenu(findViewById(R.id.map));
-        ContextPoint = point;
+        Intent addAlertActivity = new Intent(this, AddAlertActivity.class);
+        addAlertActivity.putExtra("pointLat", point.latitude);
+        addAlertActivity.putExtra("pointLng", point.longitude);
+        startActivity(addAlertActivity);
     }
 
     @Override
@@ -242,6 +245,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setPadding(0,0,25, 140);
+
         // Add a marker in Spain and move the camera just an example
         LatLng spain = new LatLng(40, -3);
         mMap.addMarker(new MarkerOptions().position(spain).title("Marker in Spain"));
@@ -298,6 +303,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         JSONObject tipo = vector.getJSONObject(i);
                         String id = tipo.getString("id");
                         String name = tipo.getString("name");
+                        String iconName = tipo.getString("icon");
 
                         ListaPuntos lista = new ListaPuntos(name);
 
@@ -311,43 +317,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Double lng = Double.parseDouble(coords[0]);
                             LatLng coordenada = new LatLng(lat, lng);
 
-                            // Semaforos acusticos
-                            if (id.equals("1")) {
+                            int iconId = getResources().getIdentifier(iconName, "drawable", getPackageName());
 
-                            } else {
-
-                                // Parking discapacitados
-                                if (id.equals("2")) {
-
-                                    MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-                                    mark.title(name);
-                                    mark.snippet(name);
-                                    lista.puntos.add(mark);
-                                    mMap.addMarker(mark);
-                                } else {
-
-                                    // Baños adaptados
-                                    if (id.equals("3")) {
-
-                                        MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-                                        mark.title(name);
-                                        mark.snippet(name);
-                                        lista.puntos.add(mark);
-                                        mMap.addMarker(mark);
-                                    } else {
-
-                                        // Ascensores
-                                        if (id.equals("4")) {
-
-                                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-                                            mark.title(name);
-                                            mark.snippet(name);
-                                            lista.puntos.add(mark);
-                                            mMap.addMarker(mark);
-                                        }
-                                    }
-                                }
+                            if (iconId == 0) {
+                                iconId = R.drawable.user;
                             }
+
+                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId));
+                            mark.title(name);
+                            mark.snippet(name);
+                            lista.puntos.add(mark);
+                            mMap.addMarker(mark);
                         }
                         marcadores.add(lista);
                     }
@@ -361,7 +341,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapClick(LatLng destination) {
-        mMap.clear(); //Esto de momento lo dejamos para poder realizar las pruebas
+        //mMap.clear(); //Esto de momento lo dejamos para poder realizar las pruebas
         if (destino != null) destino.remove();
         destino = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(destination.latitude, destination.longitude))
@@ -374,24 +354,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void getRoute(LatLng origin, LatLng destination) {
         System.out.println("*************** Dibujando la polilinea *******************");
-
         origin = new LatLng(38.383446, -0.515578);
-        Route ruta = new Route(origin, destination,mMap);
-        /*ArrayList<String> coordenadas = ruta.getCoordenadas();
-
-        System.out.println("Coordenadas" + coordenadas);
-        PolylineOptions rectOptions = new PolylineOptions()
-                .width(10)
-                .color(Color.RED);
-
-        for (int i = 0; i < coordenadas.size(); i++) {
-            System.out.println("Latitud " + coordenadas.get(i+1) + "Longitud " + coordenadas.get(i));
-            rectOptions.add(new LatLng(Double.parseDouble(coordenadas.get(i+1)), Double.parseDouble(coordenadas.get(i))));
-            i = i+3;
-        }
-
-        Polyline polyline = mMap.addPolyline(rectOptions); // Get back the mutable Polyline*/
-
+        if (RUTE_LINE!=null)RUTE_LINE.remove();
+        Route ruta = new Route(origin, destination,mMap, getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port));
     }
 
     @Override
@@ -404,11 +369,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void showMenu(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
-        // This activity implements OnMenuItemClickListener
-        popup.setOnMenuItemClickListener(this);
-        popup.inflate(R.menu.map_menu);
-        popup.show();
+        Intent intent = new Intent(this, AddAlertActivity.class);
+        startActivity(intent);
     }
 
     @Override

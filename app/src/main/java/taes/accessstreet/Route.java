@@ -29,15 +29,13 @@ public class Route extends AsyncTask<String,Void,String> {
     private GoogleMap mMap;
 
     //$x1=-0.51163670,38.38183460,0,-0.51799090,38.38634660,0;
-    public Route(LatLng origen, LatLng destino, GoogleMap mMap) {
+    public Route(LatLng origen, LatLng destino, GoogleMap mMap, String url) {
         this.origen = origen;
         this.destino = destino;
-        this.url = "http://uaccesible.francecentral.cloudapp.azure.com:80" + urlBase
-                + origen.longitude + "," + origen.latitude + ",0," + destino.longitude + "," + destino.latitude + ",0";
-
+        //this.url = "http://uaccesible.francecentral.cloudapp.azure.com:80" + urlBase + origen.longitude + "," + origen.latitude + ",0," + destino.longitude + "," + destino.latitude + ",0";
+        this.url = "http://" + url + urlBase + origen.longitude + "," + origen.latitude + ",0," + destino.longitude + "," + destino.latitude + ",0";
         this.mMap = mMap;
         this.getResponse();
-        System.out.println(url);
     }
 
 
@@ -77,14 +75,16 @@ public class Route extends AsyncTask<String,Void,String> {
                         .width(10)
                         .color(Color.RED);
 
+                rectOptions.add(origen);
                 for (int i = 0; i <= coordenadas.size()-3; i++) {
                         System.out.println("Latitud " + coordenadas.get(i+1) + " Longitud " + coordenadas.get(i));
                         rectOptions.add(new LatLng(Double.parseDouble(coordenadas.get(i+1)), Double.parseDouble(coordenadas.get(i))));
                         i = i+2;
                 }
+                rectOptions.add(destino);
 
-                Polyline polyline = mMap.addPolyline(rectOptions);
-
+                //Polyline polyline = mMap.addPolyline(rectOptions);
+                MapsActivity.RUTE_LINE = mMap.addPolyline(rectOptions);
 
             } catch (JSONException e) {
                 e.printStackTrace();
