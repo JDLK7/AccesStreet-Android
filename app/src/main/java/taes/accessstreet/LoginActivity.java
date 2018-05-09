@@ -68,6 +68,12 @@ public class LoginActivity extends AppCompatActivity {
                 nombreV = nombre.getText().toString();
                 contraV = contra.getText().toString();
 
+                //Creamos el Intent
+                Intent mapa = new Intent(LoginActivity.this, MainActivity.class);
+
+                //Iniciamos la nueva actividad
+                startActivity(mapa);
+
                 if(nombreV.isEmpty()) {
 
                     nombre.setError("Campo vacío");
@@ -79,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                     contra.setError("Campo vacío");
                     errores = true;
                 }
+
 
                 if(errores == false) {
 
