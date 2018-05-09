@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -70,9 +71,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng ContextPoint;
 
     private Marker destino;
-    LocationManager locationManager; //Declaring a Location Manager
-    private static final long LOCATION_REFRESH_DISTANCE = 1; // The minimum distance to change Updates in meters --> 10 meters
-    private static final long LOCATION_REFRESH_TIME = 1; // The minimum time between updates in milliseconds
+    private Marker destino_buscado;
+    static Polyline RUTE_LINE;
+    private View locationButton;
 
     private ArrayList<ListaPuntos> marcadores = new ArrayList<>();
     private Marker marcador;
@@ -111,8 +112,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         search_button.setImageResource(R.drawable.ic_menu_black_24px);
         search_button.setOnClickListener(this);
 
-
-
         //Find the place and add a marker
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -127,7 +126,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 //mMap.clear();
                 LatLng coordenadas = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
-                mMap.addMarker(new MarkerOptions().position(coordenadas).title(place.getAddress().toString()));
+                if (destino_buscado != null) destino_buscado.remove();
+                destino_buscado = mMap.addMarker(new MarkerOptions().position(coordenadas).title(place.getAddress().toString()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(coordenadas));
             }
 
@@ -137,13 +137,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+        //Set location button listener
+        FloatingActionButton floating_location = (FloatingActionButton) findViewById(R.id.location_btn);
+        floating_location.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.place_autocomplete_search_button:
-                showMenu(v);
+                Intent intent = new Intent();
+                intent.setClass(MapsActivity.this, OptionsActivity.class);
+                startActivity(intent);
+
+            case R.id.location_btn:
+                locationButton.callOnClick();
         }
     }
 
@@ -204,31 +213,54 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
-     * Este metodo lo que hace es reubicar el boton de my location
+     * Este metodo lo que hace es reubicar el boton de my location y zoom
      *  y se adapta al aspect ratio de la pantalla de cada dispositivo
      */
+    @SuppressLint("ResourceType")
     private void setUpMap() {
         // Find myLocationButton view
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        @SuppressLint("ResourceType") View myLocationButton = mapFragment.getView().findViewById(0x2);
+
+        /*@SuppressLint("ResourceType") View myLocationButton = mapFragment.getView().findViewById(0x2);
 
         if (myLocationButton != null && myLocationButton.getLayoutParams() instanceof RelativeLayout.LayoutParams) {
             // location button is inside of RelativeLayout
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) myLocationButton.getLayoutParams();
 
-            // Align it to - parent BOTTOM|LEFT
+            // Align it to - parent BOTTOM|RIGHT
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
             params.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
 
             // Update margins, set to 10dp
-            final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100,
+            final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170,
                     getResources().getDisplayMetrics());
             params.setMargins(margin, margin, margin, margin);
 
             myLocationButton.setLayoutParams(params);
-        }
+        }*/
+
+        locationButton = mapFragment.getView().findViewById(0x2);
+        if(locationButton != null)
+            locationButton.setVisibility(View.GONE);
+
+
+        /*@SuppressLint("ResourceType") View zoomControls = mapFragment.getView().findViewById(0x1);
+
+        if (zoomControls != null && zoomControls.getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+            // ZoomControl is inside of RelativeLayout
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) zoomControls.getLayoutParams();
+
+            // Align it to - parent top|left
+            params.addRule(RelativeLayout.ALIGN_PARENT_TOP,0);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,0);
+
+            // Update margins, set to 10dp
+            final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80,
+                    getResources().getDisplayMetrics());
+            params.setMargins(margin, margin, margin, margin);
+        }*/
     }
 
 
@@ -245,12 +277,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.setPadding(0,0,25, 140);
+        //mMap.setPadding(0,0,50, 140);
 
         // Add a marker in Spain and move the camera just an example
-        LatLng spain = new LatLng(40, -3);
-        mMap.addMarker(new MarkerOptions().position(spain).title("Marker in Spain"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(spain));
+
+        GPSTracking gps = new GPSTracking(getApplicationContext());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLat(), gps.getLng()), 15));
 
         //Displaying the button location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -262,7 +294,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         setUpMap(); //Placing location button
-        mMap.getUiSettings().setZoomControlsEnabled(true); //Displaying the zoom buttons
+        //mMap.getUiSettings().setZoomControlsEnabled(true); //Displaying the zoom buttons
         mMap.getUiSettings().setZoomGesturesEnabled(true); //Enable zoom gestures (pinch gestures)
         mMap.setOnMapLongClickListener(this); //Callback declaration for long map click
         mMap.setOnMapClickListener(this); //Callback declaration for the simple click
@@ -306,6 +338,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         JSONObject tipo = vector.getJSONObject(i);
                         String id = tipo.getString("id");
                         String name = tipo.getString("name");
+                        String iconName = tipo.getString("icon");
 
                         ListaPuntos lista = new ListaPuntos(name);
 
@@ -319,7 +352,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Double lng = Double.parseDouble(coords[0]);
                             LatLng coordenada = new LatLng(lat, lng);
 
-                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+                            int iconId = getResources().getIdentifier(iconName, "drawable", getPackageName());
+
+                            if (iconId == 0) {
+                                iconId = R.drawable.user;
+                            }
+
+                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId));
                             mark.title(name);
                             mark.snippet(name);
                             lista.puntos.add(mark);
@@ -337,7 +376,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapClick(LatLng destination) {
-        mMap.clear(); //Esto de momento lo dejamos para poder realizar las pruebas
+        //mMap.clear(); //Esto de momento lo dejamos para poder realizar las pruebas
         if (destino != null) destino.remove();
         destino = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(destination.latitude, destination.longitude))
@@ -350,24 +389,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void getRoute(LatLng origin, LatLng destination) {
         System.out.println("*************** Dibujando la polilinea *******************");
-
-        origin = new LatLng(38.383446, -0.515578);
-        Route ruta = new Route(origin, destination,mMap);
-        /*ArrayList<String> coordenadas = ruta.getCoordenadas();
-
-        System.out.println("Coordenadas" + coordenadas);
-        PolylineOptions rectOptions = new PolylineOptions()
-                .width(10)
-                .color(Color.RED);
-
-        for (int i = 0; i < coordenadas.size(); i++) {
-            System.out.println("Latitud " + coordenadas.get(i+1) + "Longitud " + coordenadas.get(i));
-            rectOptions.add(new LatLng(Double.parseDouble(coordenadas.get(i+1)), Double.parseDouble(coordenadas.get(i))));
-            i = i+3;
-        }
-
-        Polyline polyline = mMap.addPolyline(rectOptions); // Get back the mutable Polyline*/
-
+        //origin = new LatLng(38.383446, -0.515578);
+        if (RUTE_LINE!=null)RUTE_LINE.remove();
+        Route ruta = new Route(origin, destination,mMap, getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port));
     }
 
     @Override

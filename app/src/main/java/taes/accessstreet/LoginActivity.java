@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     errores = true;
                 }
 
+
                 if(errores == false) {
 
                     urlObjetos += nombre.getText().toString() + "-" + contra.getText().toString();
