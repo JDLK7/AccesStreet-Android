@@ -159,6 +159,9 @@ public class AddAlertActivity extends AppCompatActivity {
 
                     Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
                     toast.show();
+
+                    Intent maps = new Intent(AddAlertActivity.this, MapsActivity.class);
+                    startActivity(maps);
                     finish();
                 }
             }, new Response.ErrorListener() {

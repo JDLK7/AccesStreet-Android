@@ -453,7 +453,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         String name = tipo.getString("name");
                         String iconName = tipo.getString("icon");
 
-                        String iconName = tipo.getString("icon");
                         ListaPuntos lista = new ListaPuntos(name);
 
                         JSONArray misPuntos = tipo.getJSONArray("puntos");
