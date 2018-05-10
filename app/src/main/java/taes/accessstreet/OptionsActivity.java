@@ -82,6 +82,61 @@ public class OptionsActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = miPreferencia.edit();
+
+                // Guardamos las preferencias del Primero "Semaforo Acustico"
+                Switch acousticSemaphore = (Switch) findViewById(R.id.acousticSemaphore_switch);
+                Boolean acousticSemaphorePref = acousticSemaphore.isChecked();
+                editor.putBoolean("acousticSemaphore",acousticSemaphorePref);
+
+                // Guardamos las preferencias del Primero "Parking discapacitados"
+                Switch accessiblePark = (Switch) findViewById(R.id.accessiblePark_switch);
+                Boolean accessibleParkPref = accessiblePark.isChecked();
+                editor.putBoolean("accessiblePark",accessibleParkPref);
+
+                // Guardamos las preferencias del Primero "Baños adaptados"
+                Switch accessibleWC = (Switch) findViewById(R.id.accessibleWC_switch);
+                Boolean accessibleWCPref = accessibleWC.isChecked();
+                editor.putBoolean("accessibleWC",accessibleWCPref);
+
+                // Guardamos las preferencias del Primero "Ascensores"
+                Switch elevator = (Switch) findViewById(R.id.elevator_switch);
+                Boolean elevatorPref = elevator.isChecked();
+                editor.putBoolean("elevator",elevatorPref);
+
+                // Guardamos las preferencias del Primero "Escaleras"
+                Switch accessibleStair = (Switch) findViewById(R.id.accessibleStair_switch);
+                Boolean accessibleStairPref = accessibleStair.isChecked();
+                editor.putBoolean("accessibleStair",accessibleStairPref);
+
+                // Guardamos las preferencias del Primero "Rampas accesibles"
+                Switch accessibleSlope = (Switch) findViewById(R.id.accessibleSlope_switch);
+                Boolean accessibleSlopePref = accessibleSlope.isChecked();
+                editor.putBoolean("accessibleSlope",accessibleSlopePref);
+
+                // Guardamos las preferencias del Primero "Rampa inaccesible"
+                Switch obstacleSlope = (Switch) findViewById(R.id.obstacleSlope_switch);
+                Boolean obstacleSlopePref = obstacleSlope.isChecked();
+                editor.putBoolean("obstacleSlope",obstacleSlopePref);
+
+                // Guardamos las preferencias del Primero "Escaleras inaccesibles"
+                Switch obstacleStair = (Switch) findViewById(R.id.obstacleStair_switch);
+                Boolean obstacleStairPref = obstacleStair.isChecked();
+                editor.putBoolean("obstacleStair",obstacleStairPref);
+
+                // Guardamos las preferencias del Primero "Calzada en mal estado"
+                Switch obstacleSidewalk = (Switch) findViewById(R.id.obstacleSidewalk_switch);
+                Boolean obstacleSidewalkPref = obstacleSidewalk.isChecked();
+                editor.putBoolean("obstacleSidewalk",obstacleSidewalkPref);
+
+                // Guardamos las preferencias del Primero "Zona en obras"
+                Switch obstacleWorks = (Switch) findViewById(R.id.obstacleWorks_switch);
+                Boolean obstacleWorksPref = obstacleWorks.isChecked();
+                editor.putBoolean("obstacleWorks",obstacleWorksPref);
+
+                editor.putBoolean("prefInit",true);
+                editor.apply();
                 Intent intent=new Intent();
                 intent.setClass(OptionsActivity.this, MapsActivity.class);
                 startActivity(intent);
