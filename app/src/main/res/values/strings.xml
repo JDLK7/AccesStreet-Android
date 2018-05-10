@@ -5,8 +5,8 @@
     <string name="title_activity_login">LoginActivity</string>
 
     <!-- DATOS DE CONEXIÓN AL API -->
-    <string name="accesstreet_api_host">192.168.43.30</string>
-    <string name="accesstreet_api_port">8000</string>
+    <string name="accesstreet_api_host">uaccesible.francecentral.cloudapp.azure.com</string>
+    <string name="accesstreet_api_port">80</string>
 
     <!--DATOS DE CONEXION AL API ALOJADO EN AZURE -->
     <string name="accesstreet_api_azure_host">uaccesible.francecentral.cloudapp.azure.com/</string>
@@ -45,6 +45,11 @@
     <string name="disabled_slope_card">Rampa de acceso adaptada</string>
     <string name="message_interest_point_created">Punto de interés creado</string>
     <string name="message_obstacle_created">Obstáculo creado</string>
+
+    <!-- OPTIONS ACTIVITY -->
+    <string name="title_options">Opciones</string>
+    <string name="exit_options">Salir de la aplicación</string>
+    <string name="escaleras">Escaleras</string>
 
     <!-- PREFERENCES ACTIVITY -->
     <string name="save_submit_button">Guardar</string>

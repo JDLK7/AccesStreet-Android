@@ -58,6 +58,10 @@
             android:name=".AddAlertActivity"
             android:label="@string/title_activity_add_alert" />
         <activity
+            android:name=".OptionsActivity"
+            android:label="OptionsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".PreferencesActivity"
             android:label="PreferencesActivity"
             android:theme="@style/AppTheme.NoActionBar"/>

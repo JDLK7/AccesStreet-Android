@@ -35,11 +35,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     EditText email;
     RequestQueue requestQueue;
     StringRequest request;
-    String urlObjetos = "http://uaccesible.francecentral.cloudapp.azure.com/api/user/register/";
+    String urlObjetos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        urlObjetos = "http://"
+                + getResources().getString(R.string.accesstreet_api_host) + ":"
+                + getResources().getString(R.string.accesstreet_api_port) + "/api/user/register/";
+
         setContentView(R.layout.content_register);
 
         register = (CardView)findViewById(R.id.registrarse);
@@ -113,12 +118,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onResponse(String response) {
 
+                            String aux = "http://uaccesible.francecentral.cloudapp.azure.com/api/user/register/";
+
                             try {
 
                                 JSONObject jsonObject = new JSONObject(response);
-
-                                //.out.println(response);
-
 
                                 if(jsonObject.names().get(0).equals("success")) {
 
@@ -135,7 +139,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                                 else {
 
-                                    // Toast.makeText(getApplicationContext(),"ERROR: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"ERROR: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
+                                    urlObjetos = aux;
                                 }
 
                             } catch (JSONException e) {

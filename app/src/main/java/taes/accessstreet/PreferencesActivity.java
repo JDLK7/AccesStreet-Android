@@ -1,6 +1,7 @@
 package taes.accessstreet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.SharedPreferences;
@@ -127,9 +128,14 @@ public class PreferencesActivity extends AppCompatActivity {
         Boolean obstacleWorksPref = obstacleWorks.isChecked();
         editor.putBoolean("obstacleWorks",obstacleWorksPref);
 
+        editor.putBoolean("prefInit",true);
         editor.apply();
+
+        //Creamos el Intent
+        Intent mapa = new Intent(this, MapsActivity.class);
+
+        //Iniciamos la nueva actividad
+        startActivity(mapa);
+
     }
-
-
-
 }
