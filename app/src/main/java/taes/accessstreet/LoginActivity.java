@@ -119,9 +119,10 @@ public class LoginActivity extends AppCompatActivity {
                                     //Obtenemos la preferencias para saber si hay que ir a la pantalla de configuración inicial
                                     SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = miPreferencia.edit();
+
                                     boolean prefInit = miPreferencia.getBoolean("prefInit",false);
                                     CheckBox recuerdame = findViewById(R.id.checkBox);
-                                    prefInit = false;
+
                                     if(recuerdame.isChecked()){
                                         Boolean recuerdamePref = recuerdame.isChecked();
                                         editor.putBoolean("recuerdame",recuerdamePref);
