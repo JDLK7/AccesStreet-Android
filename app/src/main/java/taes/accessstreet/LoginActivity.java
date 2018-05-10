@@ -147,6 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                                     else{
                                         Intent preferencias = new Intent(LoginActivity.this, PreferencesActivity.class);
                                         startActivity(preferencias);
+                                        urlObjetos = aux;
                                     }
                                 }
 
