@@ -50,4 +50,18 @@
     <string name="title_options">Opciones</string>
     <string name="exit_options">Salir de la aplicación</string>
     <string name="escaleras">Escaleras</string>
+
+    <!-- PREFERENCES ACTIVITY -->
+    <string name="save_submit_button">Guardar</string>
+    <string name="acousticSemaphore">Semáforo Acusticos</string>
+    <string name="accessiblePark">Parking Discapacitados</string>
+    <string name="accessibleWC">Baños adaptados</string>
+    <string name="elevator">Ascensores</string>
+    <string name="accessibleStair">Escaleras</string>
+    <string name="accessibleSlope">Rampas accesibles</string>
+    <string name="obstacleSlope">Rampa inaccesible</string>
+    <string name="obstacleStair">Escaleras inaccesible</string>
+    <string name="obstacleSidewalk">Calzada en mal estado</string>
+    <string name="obstacleWorks">Zona en obras</string>
+
 </resources>
