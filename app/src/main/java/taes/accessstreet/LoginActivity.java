@@ -6,8 +6,10 @@ import android.view.View;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static final String PREFS_NAME = "Preferencias";
     CardView logearse;
     CardView registrarse;
     TextView forgotPass;
@@ -47,6 +50,20 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
         requestQueue = Volley.newRequestQueue(this);
+
+        EditText name = findViewById(R.id.nombre);
+        EditText pass = findViewById(R.id.contra);
+        CheckBox recuerdame = (CheckBox) findViewById(R.id.checkBox);
+        //Obtenemos la preferencias para saber si hay que ir a la pantalla de configuración inicial
+        SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+        String namePref = miPreferencia.getString("name","").toString();
+        name.setText(namePref);
+        String passPref = miPreferencia.getString("pass","").toString();
+        pass.setText(passPref);
+
+        boolean recuerdamePref = miPreferencia.getBoolean("recuerdame",false);
+        recuerdame.setChecked(recuerdamePref);
     }
 
     public void onClick(View v) {
@@ -99,12 +116,38 @@ public class LoginActivity extends AppCompatActivity {
 
                                     Toast.makeText(getApplicationContext(),"SUCCESS !!",Toast.LENGTH_SHORT).show();
 
-                                    //Creamos el Intent
-                                    Intent mapa = new Intent(LoginActivity.this, MainActivity.class);
+                                    //Obtenemos la preferencias para saber si hay que ir a la pantalla de configuración inicial
+                                    SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = miPreferencia.edit();
 
-                                    //Iniciamos la nueva actividad
-                                    startActivity(mapa);
+                                    boolean prefInit = miPreferencia.getBoolean("prefInit",false);
+                                    CheckBox recuerdame = findViewById(R.id.checkBox);
 
+                                    if(recuerdame.isChecked()){
+                                        Boolean recuerdamePref = recuerdame.isChecked();
+                                        editor.putBoolean("recuerdame",recuerdamePref);
+                                        EditText name = findViewById(R.id.nombre);
+                                        EditText pass = findViewById(R.id.contra);
+                                        String namePref = name.getText().toString();
+                                        String passPref = pass.getText().toString();
+                                        editor.putBoolean("recuerdame",recuerdamePref);
+                                        editor.putString("name",namePref);
+                                        editor.putString("pass",passPref);
+                                        editor.apply();
+                                    }
+
+
+                                    if(prefInit) {
+                                        //Creamos el Intent
+                                        Intent mapa = new Intent(LoginActivity.this, MapsActivity.class);
+
+                                        //Iniciamos la nueva actividad
+                                        startActivity(mapa);
+                                    }
+                                    else{
+                                        Intent preferencias = new Intent(LoginActivity.this, PreferencesActivity.class);
+                                        startActivity(preferencias);
+                                    }
                                 }
 
                                 else {

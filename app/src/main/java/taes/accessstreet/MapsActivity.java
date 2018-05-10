@@ -1,11 +1,13 @@
 package taes.accessstreet;
-
+import android.view.LayoutInflater;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -31,6 +33,10 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -84,6 +90,70 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double longitudInicial;
     private double latitudFinal;
     private double longitudFinal;
+
+    private boolean accessibleParkPref;
+    private boolean accessibleWCPref;
+    private boolean elevatorPref;
+    private boolean accessibleStairPref;
+    private boolean accessibleSlopePref;
+    private boolean obstacleSlopePref;
+    private boolean obstacleStairPref;
+    private boolean obstacleSidewalkPref;
+    private boolean obstacleWorksPref;
+
+    public static final String PREFS_NAME = "Preferencias";
+
+    /**
+     * Carga las preferencias del usuario en memoria para poder filtrar los puntos de interés y los obstáculos.
+     */
+    protected void loadUserPreferences() {
+        SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+        accessibleParkPref = miPreferencia.getBoolean("accessiblePark",false);
+        accessibleWCPref = miPreferencia.getBoolean("accessibleWC",false);
+        elevatorPref = miPreferencia.getBoolean("elevator",false);
+        accessibleStairPref = miPreferencia.getBoolean("accessibleStair",false);
+        accessibleSlopePref = miPreferencia.getBoolean("accessibleSlope",false);
+        obstacleSlopePref = miPreferencia.getBoolean("obstacleSlope",false);
+        obstacleStairPref = miPreferencia.getBoolean("obstacleStair",false);
+        obstacleSidewalkPref = miPreferencia.getBoolean("obstacleSidewalk",false);
+        obstacleWorksPref = miPreferencia.getBoolean("obstacleWorks",false);
+    }
+
+    /**
+     * Realiza una petición al servidor para obtener los tipos de avisos disponibles
+     * y los guarda en SharedPreferences para su uso posterior. Si no se obtiene
+     * nada o no se puede parsear la respuesta, se guarda una cadena vacía.
+     */
+    protected void loadPointTypes() {
+        String url = "http://"
+                + getResources().getString(R.string.accesstreet_api_host) + ":"
+                + getResources().getString(R.string.accesstreet_api_port) + "/api/tipos";
+
+        final SharedPreferences preferences = getSharedPreferences("taes.accesstreet", Context.MODE_PRIVATE);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray types = response.getJSONArray("tipos");
+                            preferences.edit().putString("types", types.toString()).apply();
+                        } catch (JSONException e) {
+                            preferences.edit().putString("types", "").apply();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        preferences.edit().putString("types", "").apply();
+                    }
+                });
+
+        AccesstreetRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
 
     @SuppressLint("MissingPermission")
     @Override
@@ -141,6 +211,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Set location button listener
         FloatingActionButton floating_location = (FloatingActionButton) findViewById(R.id.location_btn);
         floating_location.setOnClickListener(this);
+
+        /**
+         * Carga las preferencias del usuario.
+         */
+        loadUserPreferences();
+        loadPointTypes();
+    }
+
+    /**
+     * Comprueba si un tipo de aviso (DADO SU NOMBRE DE ICONO) está filtrado es deseado por el usuario o no.
+     *
+     * @param iconName
+     * @return
+     */
+    protected boolean isShownAlert(String iconName) {
+        return (iconName.equals("marker_accessible_park") && accessibleParkPref)
+            || (iconName.equals("marker_accessible_wc") && accessibleWCPref)
+            || (iconName.equals("R.mipmap.ascensor") && elevatorPref)
+            || (iconName.equals("marker_accessible_stair") && accessibleStairPref)
+            || (iconName.equals("marker_accessible_slope") && accessibleSlopePref)
+            || (iconName.equals("marker_obstacle_slope") && obstacleSlopePref)
+            || (iconName.equals("marker_obstacle_stair") && obstacleStairPref)
+            || (iconName.equals("marker_obstacle_sidewalk") && obstacleSidewalkPref)
+            || (iconName.equals("marker_obstacle_works") && obstacleWorksPref);
     }
 
     @Override
@@ -208,8 +302,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(this, MainActivity.class));
-        this.finish();
+        android.support.v7.app.AlertDialog.Builder myBuild = new android.support.v7.app.AlertDialog.Builder(this);
+        myBuild.setMessage("¿Seguro que quieres salir de AccessStreet?");
+        myBuild.setTitle("Salir de AccessStreet");
+        myBuild.setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                moveTaskToBack(true);
+            }
+        });
+
+        myBuild.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+            }
+        });
+
+        android.support.v7.app.AlertDialog dialog = myBuild.create();
+        dialog.show();
     }
 
     /**
@@ -298,7 +411,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomGesturesEnabled(true); //Enable zoom gestures (pinch gestures)
         mMap.setOnMapLongClickListener(this); //Callback declaration for long map click
         mMap.setOnMapClickListener(this); //Callback declaration for the simple click
-
+        CustomInfoWindowAdapter customInfoWindow = new CustomInfoWindowAdapter(this);
+        mMap.setInfoWindowAdapter(customInfoWindow);
+        mMap.setOnMarkerClickListener(customInfoWindow);
+        //mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(LayoutInflater.from(this.getActivity())));
         PeticionObjetos hiloConexionTodos = new PeticionObjetos();
         hiloConexionTodos.execute(urlObjetos);
     }
@@ -341,27 +457,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         JSONArray misPuntos = tipo.getJSONArray("puntos");
                         String puntosLeidos;
-                        for (int j = 0; j < misPuntos.length(); j++) {
-                            puntosLeidos = misPuntos.getString(j);
-                            //System.out.println("Punto leido: "+puntosLeidos);
-                            String[] coords = puntosLeidos.split(",");
-                            Double lat = Double.parseDouble(coords[1]);
-                            Double lng = Double.parseDouble(coords[0]);
-                            LatLng coordenada = new LatLng(lat, lng);
 
-                            int iconId = getResources().getIdentifier(iconName, "drawable", getPackageName());
 
-                            if (iconId == 0) {
-                                iconId = R.drawable.user;
+                        if (isShownAlert(iconName)) {
+                            for (int j = 0; j < misPuntos.length(); j++) {
+                                puntosLeidos = misPuntos.getString(j);
+                                String[] coords = puntosLeidos.split(",");
+                                Double lat = Double.parseDouble(coords[1]);
+                                Double lng = Double.parseDouble(coords[0]);
+                                LatLng coordenada = new LatLng(lat, lng);
+
+                                int iconId = getResources().getIdentifier(iconName, "drawable", getPackageName());
+
+                                if (iconId == 0) {
+                                    iconId = R.drawable.user;
+                                }
+
+                                MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId));
+                                mark.title(name);
+                                mark.snippet(name);
+                                lista.puntos.add(mark);
+                                mMap.addMarker(mark);
                             }
-
-                            MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId));
-                            mark.title(name);
-                            mark.snippet(name);
-                            lista.puntos.add(mark);
-                            mMap.addMarker(mark);
+                            marcadores.add(lista);
                         }
-                        marcadores.add(lista);
                     }
 
                 } catch (JSONException e) {
