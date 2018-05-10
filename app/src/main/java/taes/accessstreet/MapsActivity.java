@@ -1,5 +1,5 @@
 package taes.accessstreet;
-
+import android.view.LayoutInflater;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -411,7 +411,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomGesturesEnabled(true); //Enable zoom gestures (pinch gestures)
         mMap.setOnMapLongClickListener(this); //Callback declaration for long map click
         mMap.setOnMapClickListener(this); //Callback declaration for the simple click
-
+        CustomInfoWindowAdapter customInfoWindow = new CustomInfoWindowAdapter(this);
+        mMap.setInfoWindowAdapter(customInfoWindow);
+        mMap.setOnMarkerClickListener(customInfoWindow);
+        //mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(LayoutInflater.from(this.getActivity())));
         PeticionObjetos hiloConexionTodos = new PeticionObjetos();
         hiloConexionTodos.execute(urlObjetos);
     }
@@ -448,6 +451,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         JSONObject tipo = vector.getJSONObject(i);
                         String id = tipo.getString("id");
                         String name = tipo.getString("name");
+                        String iconName = tipo.getString("icon");
 
                         String iconName = tipo.getString("icon");
                         ListaPuntos lista = new ListaPuntos(name);
