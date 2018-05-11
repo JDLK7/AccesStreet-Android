@@ -435,7 +435,7 @@
                 android:id="@+id/tolerance"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:max="10"
+                android:max="100"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"

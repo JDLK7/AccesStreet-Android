@@ -59,6 +59,9 @@ public class PreferencesActivity extends AppCompatActivity {
         boolean acousticSemaphorePref = miPreferencia.getBoolean("acousticSemaphore",false);
         acousticSemaphore.setChecked(acousticSemaphorePref);
 
+        SeekBar sb= (SeekBar) findViewById(R.id.seekBar);
+        sb.setProgress(miPreferencia.getInt("tolerance",0));
+
         // Cargamos las preferencias del Primero "Parking discapacitados"
         Switch accessiblePark = (Switch) findViewById(R.id.accessiblePark_switch);
         boolean accessibleParkPref = miPreferencia.getBoolean("accessiblePark",false);
@@ -158,6 +161,9 @@ public class PreferencesActivity extends AppCompatActivity {
         Switch obstacleWorks = (Switch) findViewById(R.id.obstacleWorks_switch);
         Boolean obstacleWorksPref = obstacleWorks.isChecked();
         editor.putBoolean("obstacleWorks",obstacleWorksPref);
+
+        SeekBar sb= (SeekBar) findViewById(R.id.seekBar);
+        editor.putInt("tolerance",sb.getProgress());
 
         editor.putBoolean("prefInit",true);
         editor.apply();

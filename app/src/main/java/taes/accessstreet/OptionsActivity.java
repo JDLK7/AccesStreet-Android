@@ -79,6 +79,9 @@ public class OptionsActivity extends AppCompatActivity {
         boolean obstacleWorksPref = miPreferencia.getBoolean("obstacleWorks",false);
         obstacleWorks.setChecked(obstacleWorksPref);
 
+        SeekBar sb= (SeekBar) findViewById(R.id.tolerance);
+        sb.setProgress(miPreferencia.getInt("tolerance",0));
+
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +137,9 @@ public class OptionsActivity extends AppCompatActivity {
                 Switch obstacleWorks = (Switch) findViewById(R.id.obstacleWorks_switch);
                 Boolean obstacleWorksPref = obstacleWorks.isChecked();
                 editor.putBoolean("obstacleWorks",obstacleWorksPref);
+
+                SeekBar sb= (SeekBar) findViewById(R.id.tolerance);
+                editor.putInt("tolerance",sb.getProgress());
 
                 editor.putBoolean("prefInit",true);
                 editor.apply();
