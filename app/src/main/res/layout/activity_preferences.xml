@@ -13,19 +13,52 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/guardar"
+            <android.support.v7.widget.CardView
+                android:id="@+id/signup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="7dp"
                 android:onClick="guardarPreferencias"
-                android:text="@string/save_submit_button" />
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="11dp"
+                        android:layout_marginEnd="144dp"
+                        android:layout_marginStart="143dp"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/save_submit_button"
+                        android:textColor="#df546e"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout1"
@@ -42,12 +75,13 @@
                     android:lineSpacingExtra="10sp"
                     android:text="@string/acousticSemaphore"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/acousticSemaphore_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView14"
                     app:layout_constraintTop_toTopOf="@+id/acousticSemaphore_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -60,7 +94,20 @@
                     app:layout_constraintStart_toEndOf="@+id/acousticSemaphore"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView14"
+                    app:srcCompat="@drawable/marker_accessible_stair"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout2"
                 style="@style/layout">
@@ -74,12 +121,13 @@
                     android:lineSpacingExtra="10sp"
                     android:text="@string/accessiblePark"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/accessiblePark_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
                     app:layout_constraintTop_toTopOf="@+id/accessiblePark_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -92,7 +140,20 @@
                     app:layout_constraintStart_toEndOf="@+id/accessiblePark"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/marker_accessible_park" />
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout3"
                 style="@style/layout">
@@ -106,12 +167,13 @@
                     android:lineSpacingExtra="10sp"
                     android:text="@string/accessibleWC"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/accessibleWC_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView6"
                     app:layout_constraintTop_toTopOf="@+id/accessibleWC_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -124,7 +186,20 @@
                     app:layout_constraintStart_toEndOf="@+id/accessibleWC"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/marker_accessible_wc" />
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout4"
                 style="@style/layout">
@@ -138,12 +213,13 @@
                     android:lineSpacingExtra="10sp"
                     android:text="@string/elevator"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/elevator_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView13"
                     app:layout_constraintTop_toTopOf="@+id/elevator_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -156,7 +232,20 @@
                     app:layout_constraintStart_toEndOf="@+id/elevator"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView13"
+                    app:srcCompat="@drawable/marker_accessible_stair"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout5"
                 style="@style/layout">
@@ -170,12 +259,13 @@
                     android:lineSpacingExtra="10sp"
                     android:text="@string/accessibleStair"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/accessibleStair_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView7"
                     app:layout_constraintTop_toTopOf="@+id/accessibleStair_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -188,7 +278,20 @@
                     app:layout_constraintStart_toEndOf="@+id/accessibleStair"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/marker_obstacle_stair" />
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout6"
                 style="@style/layout">
@@ -202,12 +305,13 @@
                     android:lineSpacingExtra="10sp"
                     android:text="@string/accessibleSlope"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/accessibleSlope_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView8"
                     app:layout_constraintTop_toTopOf="@+id/accessibleSlope_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -220,7 +324,20 @@
                     app:layout_constraintStart_toEndOf="@+id/accessibleSlope"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/marker_accessible_slope" />
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout7"
                 style="@style/layout">
@@ -234,12 +351,13 @@
                     android:lineSpacingExtra="10sp"
                     android:text="@string/obstacleSlope"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/obstacleSlope_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView9"
                     app:layout_constraintTop_toTopOf="@+id/obstacleSlope_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -252,7 +370,20 @@
                     app:layout_constraintStart_toEndOf="@+id/obstacleSlope"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/marker_obstacle_slope" />
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout8"
                 style="@style/layout">
@@ -266,12 +397,13 @@
                     android:lineSpacingExtra="10sp"
                     android:text="@string/obstacleStair"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/obstacleStair_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView10"
                     app:layout_constraintTop_toTopOf="@+id/obstacleStair_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -284,26 +416,40 @@
                     app:layout_constraintStart_toEndOf="@+id/obstacleStair"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/marker_obstacle_stair" />
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout9"
                 style="@style/layout">
 
                 <TextView
                     android:id="@+id/obstacleSidewalk"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_width="253dp"
+                    android:layout_height="30dp"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
                     android:text="@string/obstacleSidewalk"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/obstacleSidewalk_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView11"
                     app:layout_constraintTop_toTopOf="@+id/obstacleSidewalk_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -316,7 +462,20 @@
                     app:layout_constraintStart_toEndOf="@+id/obstacleSidewalk"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/marker_obstacle_sidewalk" />
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout10"
                 style="@style/layout">
@@ -330,12 +489,13 @@
                     android:lineSpacingExtra="10sp"
                     android:text="@string/obstacleWorks"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/obstacleWorks_switch"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView12"
                     app:layout_constraintTop_toTopOf="@+id/obstacleWorks_switch"
                     app:layout_constraintVertical_bias="0.0" />
 
@@ -348,7 +508,53 @@
                     app:layout_constraintStart_toEndOf="@+id/obstacleWorks"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.521" />
+
+                <ImageView
+                    android:id="@+id/imageView12"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/marker_obstacle_works" />
             </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tolerancia"
+                    android:layout_width="15dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="Tolerancia: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#ffffff"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/seekBarCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#ffffff"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:colorControlActivated="#ffffff"
+                android:max="100"
+                android:progressTint="#ffffff"
+                android:thumbTint="#ffffff" />
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
