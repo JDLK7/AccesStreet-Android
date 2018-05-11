@@ -1,5 +1,6 @@
 package taes.accessstreet;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 
@@ -27,13 +28,14 @@ public class Route extends AsyncTask<String,Void,String> {
     final String urlBase = "/api/rutaAux";
     ArrayList<String> coordenadas = new ArrayList<>();
     private GoogleMap mMap;
+    public static final String PREFS_NAME = "Preferencias";
 
     //$x1=-0.51163670,38.38183460,0,-0.51799090,38.38634660,0;
-    public Route(LatLng origen, LatLng destino, GoogleMap mMap, String url) {
+    public Route(LatLng origen, LatLng destino, GoogleMap mMap, String url, String pref, int tol) {
         this.origen = origen;
         this.destino = destino;
         //this.url = "http://uaccesible.francecentral.cloudapp.azure.com:80" + urlBase + origen.longitude + "," + origen.latitude + ",0," + destino.longitude + "," + destino.latitude + ",0";
-        this.url = "http://" + url + urlBase + origen.longitude + "," + origen.latitude + ",0," + destino.longitude + "," + destino.latitude + ",0";
+        this.url = "http://" + url + urlBase + origen.longitude + "," + origen.latitude + ",0," + destino.longitude + "," + destino.latitude + ",0/"+pref+"/"+tol;
         this.mMap = mMap;
         this.getResponse();
     }

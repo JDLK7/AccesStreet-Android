@@ -507,7 +507,68 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println("*************** Dibujando la polilinea *******************");
         //origin = new LatLng(38.383446, -0.515578);
         if (RUTE_LINE!=null)RUTE_LINE.remove();
-        Route ruta = new Route(origin, destination,mMap, getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port));
+        String prefs="";
+        SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+        boolean acousticSemaphorePref = miPreferencia.getBoolean("acousticSemaphore",false);
+        if(acousticSemaphorePref){
+            prefs=prefs+"1,";
+        }
+
+        boolean accessibleParkPref = miPreferencia.getBoolean("accessiblePark",false);
+        if(accessibleParkPref){
+            prefs=prefs+"2,";
+        }
+
+        boolean accessibleWCPref = miPreferencia.getBoolean("accessibleWC",false);
+        if(accessibleParkPref){
+            prefs=prefs+"3,";
+        }
+
+        boolean elevatorPref = miPreferencia.getBoolean("elevator",false);
+        if(elevatorPref){
+            prefs=prefs+"4,";
+        }
+
+        boolean accessibleStairPref = miPreferencia.getBoolean("accessibleStair",false);
+        if(accessibleStairPref){
+            prefs=prefs+"5,";
+        }
+
+        boolean accessibleSlopePref = miPreferencia.getBoolean("accessibleSlope",false);
+        if(accessibleSlopePref){
+            prefs=prefs+"6,";
+        }
+
+        boolean obstacleSlopePref = miPreferencia.getBoolean("obstacleSlope",false);
+        if(obstacleSlopePref){
+            prefs=prefs+"7,";
+        }
+
+        boolean obstacleStairPref = miPreferencia.getBoolean("obstacleStair",false);
+        if(obstacleStairPref){
+            prefs=prefs+"8,";
+        }
+
+        boolean obstacleSidewalkPref = miPreferencia.getBoolean("obstacleSidewalk",false);
+        if(obstacleStairPref){
+            prefs=prefs+"9,";
+        }
+
+        boolean obstacleWorksPref = miPreferencia.getBoolean("obstacleWorks",false);
+        if(obstacleWorksPref){
+            prefs=prefs+"10";
+        }
+
+        if(prefs.charAt(prefs.length()-1)==','){
+            StringBuilder sb = new StringBuilder(prefs);
+            sb.deleteCharAt(prefs.length()-1);
+            prefs=sb.toString();
+        }
+
+        int tol=miPreferencia.getInt("tolerance",0);
+
+        Route ruta = new Route(origin, destination,mMap, getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port),prefs,tol);
     }
 
     @Override
