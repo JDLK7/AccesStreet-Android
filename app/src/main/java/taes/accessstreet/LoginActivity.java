@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     boolean prefInit = miPreferencia.getBoolean("prefInit",false);
                                     CheckBox recuerdame = findViewById(R.id.checkBox);
-
+                                    //prefInit = false;
                                     if(recuerdame.isChecked()){
                                         Boolean recuerdamePref = recuerdame.isChecked();
                                         editor.putBoolean("recuerdame",recuerdamePref);
