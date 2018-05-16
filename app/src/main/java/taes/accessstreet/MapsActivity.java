@@ -435,12 +435,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 titulo = (TextView) v.findViewById(R.id.titulo);
                 titulo.setText(marker.getTitle());
 
+                // Se recupera el ID del punto para poder recuperar los datos del mismo y de su creador
+                int pointId = Integer.valueOf(marker.getSnippet());
+
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
 
                         //Creamos el Intent
-                        Intent mapa = new Intent(MapsActivity.this,valorar.class);
+                        Intent mapa = new Intent(MapsActivity.this, valorar.class);
 
                         //Iniciamos la nueva actividad
                         startActivity(mapa);
@@ -487,16 +490,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         ListaPuntos lista = new ListaPuntos(name);
 
-                        JSONArray misPuntos = tipo.getJSONArray("puntos");
-                        String puntosLeidos;
-
+                        JSONArray misPuntos = tipo.getJSONArray("points");
 
                         if (isShownAlert(iconName)) {
                             for (int j = 0; j < misPuntos.length(); j++) {
-                                puntosLeidos = misPuntos.getString(j);
-                                String[] coords = puntosLeidos.split(",");
-                                Double lat = Double.parseDouble(coords[1]);
-                                Double lng = Double.parseDouble(coords[0]);
+
+                                // Se obtiene la latitud y la longitud a partir de las coordenadas del punto
+                                JSONObject punto = misPuntos.getJSONObject(j);
+                                Double lng = punto.getDouble("x");
+                                Double lat = punto.getDouble("y");
+
                                 LatLng coordenada = new LatLng(lat, lng);
 
                                 int iconId = getResources().getIdentifier(iconName, "drawable", getPackageName());
@@ -507,10 +510,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId))
                                 .title(name);
-                                mark.snippet(name);
+
+                                // Se guarda el ID del punto en el snippet para poder recuperar sus
+                                // sus detalles y su creador al abrir el popup de detalles de un
+                                // obstaculo o punto de interes
+                                mark.snippet(String.valueOf(punto.getInt("id")));
+
                                 lista.puntos.add(mark);
                                 mMap.addMarker(mark);
-
                             }
                             marcadores.add(lista);
                         }
