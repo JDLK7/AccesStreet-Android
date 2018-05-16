@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -55,6 +56,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -90,6 +92,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double longitudInicial;
     private double latitudFinal;
     private double longitudFinal;
+
+    public ImageView imagen;
+    TextView titulo;
 
     private boolean accessibleParkPref;
     private boolean accessibleWCPref;
@@ -387,7 +392,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
 
         //mMap.setPadding(0,0,50, 140);
@@ -411,12 +416,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomGesturesEnabled(true); //Enable zoom gestures (pinch gestures)
         mMap.setOnMapLongClickListener(this); //Callback declaration for long map click
         mMap.setOnMapClickListener(this); //Callback declaration for the simple click
-        CustomInfoWindowAdapter customInfoWindow = new CustomInfoWindowAdapter(this);
-        mMap.setInfoWindowAdapter(customInfoWindow);
-        mMap.setOnMarkerClickListener(customInfoWindow);
+
         //mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(LayoutInflater.from(this.getActivity())));
         PeticionObjetos hiloConexionTodos = new PeticionObjetos();
         hiloConexionTodos.execute(urlObjetos);
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                View v = getLayoutInflater().inflate(R.layout.informacion,null);
+
+                titulo = (TextView) v.findViewById(R.id.titulo);
+                titulo.setText(marker.getTitle());
+
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+
+                        //Creamos el Intent
+                        Intent mapa = new Intent(MapsActivity.this,valorar.class);
+
+                        //Iniciamos la nueva actividad
+                        startActivity(mapa);
+                    }
+                });
+                return v;
+            }
+        });
     }
 
     /**
@@ -473,11 +505,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     iconId = R.drawable.user;
                                 }
 
-                                MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId));
-                                mark.title(name);
+                                MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId))
+                                .title(name);
                                 mark.snippet(name);
                                 lista.puntos.add(mark);
                                 mMap.addMarker(mark);
+
                             }
                             marcadores.add(lista);
                         }
