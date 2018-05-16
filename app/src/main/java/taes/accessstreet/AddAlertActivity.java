@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,6 +24,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddAlertActivity extends AppCompatActivity {
 
@@ -170,7 +174,19 @@ public class AddAlertActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            });
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+
+                    SharedPreferences preferences = getSharedPreferences(LoginActivity.PREFS_NAME, Context.MODE_PRIVATE);
+                    String jwt = preferences.getString("jwt", "");
+
+                    headers.put("Authorization", "Bearer " + jwt);
+
+                    return headers;
+                }
+            };
 
         AccesstreetRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
