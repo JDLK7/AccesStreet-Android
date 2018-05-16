@@ -6,10 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.SharedPreferences;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 
 public class PreferencesActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "Preferencias";
+    private SeekBar Tolerancia;
+    private TextView barCount;
+    private int valorSeekBar;
+    SharedPreferences miPreferencia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +23,33 @@ public class PreferencesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preferences);
 
         // Restore preferences
-        SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
+
+        Tolerancia = findViewById(R.id.seekBar);
+        barCount = findViewById(R.id.seekBarCount);
+
+        miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+        Tolerancia.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                barCount.setText(String.valueOf(progress));
+                valorSeekBar = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Guardamos las preferencias del Primero "Semaforo Acustico"
+                SharedPreferences.Editor editor = miPreferencia.edit();
+                editor.putInt("tolerancia", valorSeekBar);
+                editor.apply();
+            }
+        });
 
         // Si alguien mira esto, se perfectamente que se puede optimizar de forma que no tenga que repetir tanto codigo, pero falta tiempo
         // para producir errores tontos por parecer bonito ::Néstor::
@@ -27,6 +58,9 @@ public class PreferencesActivity extends AppCompatActivity {
         Switch acousticSemaphore = (Switch) findViewById(R.id.acousticSemaphore_switch);
         boolean acousticSemaphorePref = miPreferencia.getBoolean("acousticSemaphore",false);
         acousticSemaphore.setChecked(acousticSemaphorePref);
+
+        SeekBar sb= (SeekBar) findViewById(R.id.seekBar);
+        sb.setProgress(miPreferencia.getInt("tolerance",0));
 
         // Cargamos las preferencias del Primero "Parking discapacitados"
         Switch accessiblePark = (Switch) findViewById(R.id.accessiblePark_switch);
@@ -75,7 +109,7 @@ public class PreferencesActivity extends AppCompatActivity {
     }
 
     public void guardarPreferencias(View v){
-        SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE);
+        miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = miPreferencia.edit();
 
         // Guardamos las preferencias del Primero "Semaforo Acustico"
@@ -127,6 +161,9 @@ public class PreferencesActivity extends AppCompatActivity {
         Switch obstacleWorks = (Switch) findViewById(R.id.obstacleWorks_switch);
         Boolean obstacleWorksPref = obstacleWorks.isChecked();
         editor.putBoolean("obstacleWorks",obstacleWorksPref);
+
+        SeekBar sb= (SeekBar) findViewById(R.id.seekBar);
+        editor.putInt("tolerance",sb.getProgress());
 
         editor.putBoolean("prefInit",true);
         editor.apply();

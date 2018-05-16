@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
         urlObjetos = "http://"
                 + getResources().getString(R.string.accesstreet_api_host) + ":"
-                + getResources().getString(R.string.accesstreet_api_port) + "/api/user/";
+                + getResources().getString(R.string.accesstreet_api_port) + "/api/login";
 
         setContentView(R.layout.activity_login);
         requestQueue = Volley.newRequestQueue(this);
@@ -97,65 +97,53 @@ public class LoginActivity extends AppCompatActivity {
                     errores = true;
                 }
 
-
                 if(errores == false) {
-
-                    urlObjetos += nombre.getText().toString() + "-" + contra.getText().toString();
 
                     request = new StringRequest(Request.Method.POST, urlObjetos, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
-                            String aux = "http://uaccesible.francecentral.cloudapp.azure.com/api/user/";
-
                             try {
 
                                 JSONObject jsonObject = new JSONObject(response);
-                                if(jsonObject.names().get(0).equals("success")) {
+                                if(jsonObject.getBoolean("success")) {
 
-
-                                    Toast.makeText(getApplicationContext(),"SUCCESS !!",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Bienvenid@!",Toast.LENGTH_SHORT).show();
 
                                     //Obtenemos la preferencias para saber si hay que ir a la pantalla de configuración inicial
                                     SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = miPreferencia.edit();
 
+                                    // Guardamos el JWT en sharedPreferences
+                                    editor.putString("jwt", jsonObject.getJSONObject("data").getString("token")).apply();
+
                                     boolean prefInit = miPreferencia.getBoolean("prefInit",false);
                                     CheckBox recuerdame = findViewById(R.id.checkBox);
-                                    prefInit = false;
 
+                                    //prefInit = false;
                                     if(recuerdame.isChecked()){
                                         Boolean recuerdamePref = recuerdame.isChecked();
-                                        editor.putBoolean("recuerdame",recuerdamePref);
+                                        editor.putBoolean("recuerdame", recuerdamePref);
                                         EditText name = findViewById(R.id.nombre);
                                         EditText pass = findViewById(R.id.contra);
                                         String namePref = name.getText().toString();
                                         String passPref = pass.getText().toString();
-                                        editor.putBoolean("recuerdame",recuerdamePref);
+                                        editor.putBoolean("recuerdame", recuerdamePref);
                                         editor.putString("name",namePref);
                                         editor.putString("pass",passPref);
                                         editor.apply();
                                     }
 
-
                                     if(prefInit) {
-                                        //Creamos el Intent
                                         Intent mapa = new Intent(LoginActivity.this, MapsActivity.class);
-
-                                        //Iniciamos la nueva actividad
                                         startActivity(mapa);
                                     }
                                     else{
                                         Intent preferencias = new Intent(LoginActivity.this, PreferencesActivity.class);
                                         startActivity(preferencias);
-                                        urlObjetos = aux;
                                     }
                                 }
-
                                 else {
-
-                                    Toast.makeText(getApplicationContext(),"ERROR: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
-                                    urlObjetos = aux;
+                                    Toast.makeText(getApplicationContext(),"Error: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -165,15 +153,16 @@ public class LoginActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            nombre.setError("Credenciales inválidos");
+                            contra.setError("Credenciales inválidos");
                         }
                     }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             HashMap<String,String> hashMap = new HashMap<String,String>();
 
-                            hashMap.put("name",nombre.getText().toString());
-                            hashMap.put("password",contra.getText().toString());
+                            hashMap.put("email", nombre.getText().toString());
+                            hashMap.put("password", contra.getText().toString());
 
                             return hashMap;
                         }

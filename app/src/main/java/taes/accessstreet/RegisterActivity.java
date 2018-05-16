@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         urlObjetos = "http://"
                 + getResources().getString(R.string.accesstreet_api_host) + ":"
-                + getResources().getString(R.string.accesstreet_api_port) + "/api/user/register/";
+                + getResources().getString(R.string.accesstreet_api_port) + "/api/register";
 
         setContentView(R.layout.content_register);
 
@@ -111,42 +111,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
 
                 if(errores == false) {
-
-                    urlObjetos += nombre.getText().toString() + "-" + email.getText().toString() + "-" + contrasenya.getText().toString();
-
                     request = new StringRequest(Request.Method.POST, urlObjetos, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
-                            String aux = "http://uaccesible.francecentral.cloudapp.azure.com/api/user/register/";
-
                             try {
-
                                 JSONObject jsonObject = new JSONObject(response);
 
-                                if(jsonObject.names().get(0).equals("success")) {
+                                if (jsonObject.getBoolean("success")) {
+                                    Toast.makeText(getApplicationContext(),"Registro correcto",Toast.LENGTH_SHORT).show();
 
-
-                                    Toast.makeText(getApplicationContext(),"SUCCESS " + jsonObject.getString("success"),Toast.LENGTH_SHORT).show();
-
-                                    //Creamos el Intent
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-
-                                    //Iniciamos la nueva actividad
                                     startActivity(intent);
-
                                 }
-
                                 else {
-
-                                    Toast.makeText(getApplicationContext(),"ERROR: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
-                                    urlObjetos = aux;
+                                    Toast.makeText(getApplicationContext(),"Error: " + jsonObject.getString("error"),Toast.LENGTH_SHORT).show();
                                 }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -158,9 +141,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         protected Map<String, String> getParams() throws AuthFailureError {
                             HashMap<String,String> hashMap = new HashMap<String,String>();
 
-                            hashMap.put("name",nombre.getText().toString());
-                            hashMap.put("email",email.getText().toString());
-                            hashMap.put("password",contrasenya.getText().toString());
+                            hashMap.put("name", nombre.getText().toString());
+                            hashMap.put("email", email.getText().toString());
+                            hashMap.put("password", contrasenya.getText().toString());
+                            hashMap.put("password_confirmation", repetir.getText().toString());
 
                             return hashMap;
                         }

@@ -63,12 +63,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PreferencesActivity"
-            android:label="PreferencesActivity"
+            android:label="Preferencias"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".valorar"
             android:label="ValorarActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
 
 </manifest>
