@@ -1,5 +1,6 @@
 package taes.accessstreet;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,29 +8,43 @@ import android.widget.ImageButton;
 
 public class valorar extends AppCompatActivity {
 
-    ImageButton boton;
+    ImageButton megusta;
+    ImageButton reportar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valorar);
 
-        boton = (ImageButton)findViewById(R.id.imageButton3);
+        megusta = (ImageButton)findViewById(R.id.imageButton3);
+        reportar = (ImageButton)findViewById(R.id.imageButton2);
 
-        boton.setOnClickListener(new View.OnClickListener() {
+        megusta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                boton.setImageResource(R.drawable.concorazon);
+                megusta.setImageResource(R.drawable.concorazon);
             }
         });
 
-        boton.setOnLongClickListener(new View.OnLongClickListener() {
+        megusta.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
 
-                boton.setImageResource(R.drawable.sincorazon);
+                megusta.setImageResource(R.drawable.sincorazon);
                 return true;
+            }
+        });
+
+        reportar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Creamos el Intent
+                Intent mapa = new Intent(valorar.this,denuncias.class);
+
+                //Iniciamos la nueva actividad
+                startActivity(mapa);
             }
         });
     }

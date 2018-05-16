@@ -68,6 +68,11 @@
         <activity
             android:name=".valorar"
             android:label="ValorarActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".denuncias"
+            android:label="DenunciasActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
     </application>

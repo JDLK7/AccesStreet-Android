@@ -64,4 +64,7 @@
     <string name="obstacleSidewalk">Calzada en mal estado</string>
     <string name="obstacleWorks">Zona en obras</string>
 
+    <!-- DENUNCIAS ACTIVITY -->
+    <string name="denuncia_parking">Denuncia parking</string>
+
 </resources>
