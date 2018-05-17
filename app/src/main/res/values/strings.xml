@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AccessStreet</string>
     <string name="title_activity_maps">Map</string>
-    <string name="google_maps_key">AIzaSyDGHS0oV7vgbcDJN63P_TqAHtpuwRJBRAQ</string>
+    <string name="google_maps_key">AIzaSyDOaGnM9nIrzXfJKyDjg1E00w9jX_2H4QQ</string>
     <string name="title_activity_login">LoginActivity</string>
 
     <!-- DATOS DE CONEXIÓN AL API -->
@@ -64,5 +64,8 @@
     <string name="obstacleSidewalk">Calzada en mal estado</string>
     <string name="obstacleWorks">Zona en obras</string>
     <string name="exitApp">Salir de la aplicación</string>
+
+    <!-- DENUNCIAS ACTIVITY -->
+    <string name="denuncia_parking">Denuncia parking</string>
 
 </resources>
