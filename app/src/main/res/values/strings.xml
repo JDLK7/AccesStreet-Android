@@ -63,6 +63,7 @@
     <string name="obstacleStair">Escaleras inaccesible</string>
     <string name="obstacleSidewalk">Calzada en mal estado</string>
     <string name="obstacleWorks">Zona en obras</string>
+    <string name="exitApp">Salir de la aplicación</string>
 
     <!-- DENUNCIAS ACTIVITY -->
     <string name="denuncia_parking">Denuncia parking</string>

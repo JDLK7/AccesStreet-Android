@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -20,14 +22,43 @@ import java.util.ArrayList;
  */
 
 public class OptionsActivity extends AppCompatActivity {
+    private TextView barCount;
+    private int valorSeekBar;
     public static final String PREFS_NAME = "Preferencias";
+    SharedPreferences miPreferencia;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_options);
-        Button b= findViewById(R.id.aplicar);
+        setContentView(R.layout.activity_preferences);
 
-        SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SeekBar sb = findViewById(R.id.seekBar);
+        barCount = findViewById(R.id.seekBarCount);
+
+        miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                barCount.setText(String.valueOf(progress));
+                valorSeekBar = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Guardamos las preferencias del Primero "Semaforo Acustico"
+                SharedPreferences.Editor editor = miPreferencia.edit();
+                editor.putInt("tolerancia", valorSeekBar);
+                editor.apply();
+            }
+        });
+
+        CardView b= findViewById(R.id.signup);
 
         // Cargamos las preferencias del Primero "Semaforo Acustico"
         Switch acousticSemaphore = (Switch) findViewById(R.id.acousticSemaphore_switch);
@@ -79,7 +110,6 @@ public class OptionsActivity extends AppCompatActivity {
         boolean obstacleWorksPref = miPreferencia.getBoolean("obstacleWorks",false);
         obstacleWorks.setChecked(obstacleWorksPref);
 
-        SeekBar sb= (SeekBar) findViewById(R.id.tolerance);
         sb.setProgress(miPreferencia.getInt("tolerance",0));
 
         b.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +168,7 @@ public class OptionsActivity extends AppCompatActivity {
                 Boolean obstacleWorksPref = obstacleWorks.isChecked();
                 editor.putBoolean("obstacleWorks",obstacleWorksPref);
 
-                SeekBar sb= (SeekBar) findViewById(R.id.tolerance);
+                SeekBar sb= (SeekBar) findViewById(R.id.seekBar);
                 editor.putInt("tolerance",sb.getProgress());
 
                 editor.putBoolean("prefInit",true);
@@ -149,9 +179,9 @@ public class OptionsActivity extends AppCompatActivity {
             }
         });
 
-        b= findViewById(R.id.salir);
+        CardView c= findViewById(R.id.salirB);
 
-        b.setOnClickListener(new View.OnClickListener() {
+        c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent();
