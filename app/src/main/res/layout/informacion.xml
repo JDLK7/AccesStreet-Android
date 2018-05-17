@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="125dp"
+    android:layout_height="70dp"
+    android:padding="5dp" >
+
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="5dp"
+        android:text="Titulo"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/nombreCreador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dip"
+        android:layout_below="@+id/titulo"
+        android:text="Creador: " />
+
+    <TextView
+        android:id="@+id/creador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titulo"
+        android:layout_marginTop="25dip"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toEndOf="@+id/nombreFecha"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/nombreFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dip"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:text="Fecha: " />
+
+    <TextView
+        android:id="@+id/fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/creador"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="25dip"
+        android:text="TextView" />
+
+
+</RelativeLayout>
