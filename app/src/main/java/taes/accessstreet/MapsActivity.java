@@ -1,8 +1,8 @@
 package taes.accessstreet;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,6 +47,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -240,6 +241,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             || (iconName.equals("marker_obstacle_stair") && obstacleStairPref)
             || (iconName.equals("marker_obstacle_sidewalk") && obstacleSidewalkPref)
             || (iconName.equals("marker_obstacle_works") && obstacleWorksPref);
+    }
+
+    /**
+     * Devuelve la rotación (en grados Norte hacia el Este) que hay
+     * que girar la camara para que apunte a la destinación.
+     *
+     * @param origin posicion actual
+     * @param destination posicion a la que se quiere apuntar
+     * @return
+     */
+    protected float getBearingToDestination(LatLng origin, LatLng destination) {
+        double dLng = destination.longitude - origin.longitude;
+        double y = Math.sin(dLng) * Math.cos(origin.longitude);
+        double x = Math.cos(origin.latitude) * Math.sin(destination.latitude) - Math.sin(origin.latitude) * Math.cos(destination.latitude) * Math.cos(dLng);
+
+        return (float)Math.toDegrees((Math.atan2(y, x)));
     }
 
     @Override
@@ -531,19 +548,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapClick(LatLng destination) {
-        //mMap.clear(); //Esto de momento lo dejamos para poder realizar las pruebas
+    public void onMapClick(final LatLng destination) {
         if (destino != null) destino.remove();
+
         destino = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(destination.latitude, destination.longitude))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         GPSTracking gps = new GPSTracking(getApplicationContext());
+
         System.out.println("******************** Origen --> " + gps.getLng() + ":" + gps.getLat());
         System.out.println("******************** Destino --> " + destination.longitude + ":" + destination.latitude);
-        getRoute(new LatLng(gps.getLat(), gps.getLng()), destination);
+
+        final LatLng latLng = new LatLng(gps.getLat(), gps.getLng());
+        getRoute(latLng, destination);
+
+        AlertDialog.Builder myBuild = new AlertDialog.Builder(this);
+        myBuild.setMessage("¿Iniciar la vista de navegación?");
+        myBuild.setTitle("Iniciar navegación");
+        myBuild.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                float zoom = mMap.getMaxZoomLevel();
+                float bearing = getBearingToDestination(latLng, destination);
+
+                CameraPosition cameraPos = new CameraPosition.Builder().target(latLng)
+                        .zoom(zoom).bearing(bearing).tilt(45.0f).build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPos), null);
+            }
+        });
+
+        myBuild.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog dialog = myBuild.create();
+        dialog.show();
     }
 
-    public void getRoute(LatLng origin, LatLng destination) {
+    public Route getRoute(LatLng origin, LatLng destination) {
         System.out.println("*************** Dibujando la polilinea *******************");
         //origin = new LatLng(38.383446, -0.515578);
         if (RUTE_LINE!=null)RUTE_LINE.remove();
@@ -608,7 +654,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         int tol=miPreferencia.getInt("tolerance",0);
 
-        Route ruta = new Route(origin, destination,mMap, getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port),prefs,tol);
+        return new Route(origin, destination,mMap, getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port),prefs,tol);
     }
 
     @Override
