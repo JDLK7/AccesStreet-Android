@@ -106,8 +106,8 @@
 
                 <TextView
                     android:id="@+id/acousticSemaphore"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
@@ -118,20 +118,17 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/acousticSemaphore_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView14"
-                    app:layout_constraintTop_toTopOf="@+id/acousticSemaphore_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
                     android:id="@+id/acousticSemaphore_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/acousticSemaphore"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView14"
@@ -152,8 +149,8 @@
 
                 <TextView
                     android:id="@+id/accessiblePark"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
@@ -164,20 +161,17 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/accessiblePark_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView5"
-                    app:layout_constraintTop_toTopOf="@+id/accessiblePark_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
                     android:id="@+id/accessiblePark_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/accessiblePark"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView5"
@@ -198,8 +192,8 @@
 
                 <TextView
                     android:id="@+id/accessibleWC"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
@@ -210,20 +204,17 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/accessibleWC_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView6"
-                    app:layout_constraintTop_toTopOf="@+id/accessibleWC_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
                     android:id="@+id/accessibleWC_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/accessibleWC"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView6"
@@ -244,8 +235,8 @@
 
                 <TextView
                     android:id="@+id/elevator"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
@@ -256,20 +247,17 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/elevator_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView13"
-                    app:layout_constraintTop_toTopOf="@+id/elevator_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
                     android:id="@+id/elevator_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/elevator"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView13"
@@ -290,8 +278,8 @@
 
                 <TextView
                     android:id="@+id/accessibleStair"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
@@ -302,20 +290,17 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/accessibleStair_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView7"
-                    app:layout_constraintTop_toTopOf="@+id/accessibleStair_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
                     android:id="@+id/accessibleStair_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/accessibleStair"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView7"
@@ -336,8 +321,8 @@
 
                 <TextView
                     android:id="@+id/accessibleSlope"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
@@ -348,15 +333,13 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/accessibleSlope_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView8"
-                    app:layout_constraintTop_toTopOf="@+id/accessibleSlope_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
                     android:id="@+id/accessibleSlope_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/accessibleSlope"
@@ -382,8 +365,8 @@
 
                 <TextView
                     android:id="@+id/obstacleSlope"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
@@ -394,20 +377,17 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/obstacleSlope_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView9"
-                    app:layout_constraintTop_toTopOf="@+id/obstacleSlope_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="@+id/obstacleSlope_switch" />
 
                 <Switch
                     android:id="@+id/obstacleSlope_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/obstacleSlope"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView9"
@@ -428,8 +408,8 @@
 
                 <TextView
                     android:id="@+id/obstacleStair"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
@@ -440,20 +420,17 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/obstacleStair_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView10"
-                    app:layout_constraintTop_toTopOf="@+id/obstacleStair_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="@+id/obstacleStair_switch" />
 
                 <Switch
                     android:id="@+id/obstacleStair_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/obstacleStair"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView10"
@@ -474,7 +451,7 @@
 
                 <TextView
                     android:id="@+id/obstacleSidewalk"
-                    android:layout_width="253dp"
+                    android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
@@ -486,20 +463,17 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/obstacleSidewalk_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView11"
-                    app:layout_constraintTop_toTopOf="@+id/obstacleSidewalk_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
                     android:id="@+id/obstacleSidewalk_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/obstacleSidewalk"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView11"
@@ -520,8 +494,8 @@
 
                 <TextView
                     android:id="@+id/obstacleWorks"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
@@ -532,20 +506,17 @@
                     android:typeface="normal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/obstacleWorks_switch"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/imageView12"
-                    app:layout_constraintTop_toTopOf="@+id/obstacleWorks_switch"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
                     android:id="@+id/obstacleWorks_switch"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/obstacleWorks"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView12"
