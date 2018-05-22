@@ -1,4 +1,5 @@
 package taes.accessstreet;
+import android.support.design.internal.NavigationMenu;
 import android.view.LayoutInflater;
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -60,6 +61,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+
 class ListaPuntos {
     public String name;
     public ArrayList<MarkerOptions> puntos;
@@ -70,7 +73,7 @@ class ListaPuntos {
     }
 }
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMapClickListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMapClickListener, FabSpeedDial.MenuListener {
 
     private GoogleMap mMap;
     private static final String TAG = "MapsActivity";
@@ -214,8 +217,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         //Set location button listener
-        FloatingActionButton floating_location = (FloatingActionButton) findViewById(R.id.location_btn);
-        floating_location.setOnClickListener(this);
+        /*FloatingActionButton floating_location = (FloatingActionButton) findViewById(R.id.location_btn);
+        floating_location.setOnClickListener(this);*/
+
+        FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fab_speed_dial);
+        fabSpeedDial.setMenuListener(this);
 
         /**
          * Carga las preferencias del usuario.
@@ -250,8 +256,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 intent.setClass(MapsActivity.this, OptionsActivity.class);
                 startActivity(intent);
 
-            case R.id.location_btn:
-                locationButton.callOnClick();
+            /*case R.id.location_btn:
+                locationButton.callOnClick();*/
         }
     }
 
@@ -454,6 +460,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    @Override
+    public boolean onPrepareMenu(NavigationMenu navigationMenu) {
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_parking:
+                if (destino != null) destino.remove();
+                GPSTracking gps_parking = new GPSTracking(getApplicationContext());
+                getRoute(new LatLng(gps_parking.getLat(), gps_parking.getLng()), new LatLng(0.0,0.0), 2);
+                return true;
+            case R.id.action_aseo:
+                if (destino != null) destino.remove();
+                GPSTracking gps_aseo = new GPSTracking(getApplicationContext());
+                getRoute(new LatLng(gps_aseo.getLat(), gps_aseo.getLng()), new LatLng(0.0,0.0), 3);
+                return true;
+            case R.id.action_posicion:
+                locationButton.callOnClick();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void onMenuClosed() {
+
+    }
+
     /**
      * Clase auxiliar que pedirá todos los puntos al servidor y los mostrará en el mapa
      */
@@ -540,10 +577,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GPSTracking gps = new GPSTracking(getApplicationContext());
         System.out.println("******************** Origen --> " + gps.getLng() + ":" + gps.getLat());
         System.out.println("******************** Destino --> " + destination.longitude + ":" + destination.latitude);
-        getRoute(new LatLng(gps.getLat(), gps.getLng()), destination);
+        getRoute(new LatLng(gps.getLat(), gps.getLng()), destination, 0);
     }
 
-    public void getRoute(LatLng origin, LatLng destination) {
+    public void getRoute(LatLng origin, LatLng destination, int tipo) {
         System.out.println("*************** Dibujando la polilinea *******************");
         //origin = new LatLng(38.383446, -0.515578);
         if (RUTE_LINE!=null)RUTE_LINE.remove();
@@ -607,8 +644,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         int tol=miPreferencia.getInt("tolerance",0);
-
-        Route ruta = new Route(origin, destination,mMap, getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port),prefs,tol);
+        if (tipo == 0) {
+            Route ruta = new Route(origin, destination,mMap, getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port),prefs,tol);
+        }
+        else {
+            PuntoCercano cercano = new PuntoCercano(origin.latitude, origin.longitude, Integer.toString(tipo), getString(R.string.accesstreet_api_host) + ":" + getString(R.string.accesstreet_api_port) , mMap, prefs, tol);
+        }
     }
 
     @Override

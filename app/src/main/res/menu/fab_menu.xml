@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_parking"
+        android:icon="@drawable/ic_baseline_local_parking_24px"
+        android:title="Parking" />
+    <item
+        android:id="@+id/action_aseo"
+        android:icon="@drawable/ic_baseline_wc_24px"
+        android:title="Aseo"/>
+    <item
+        android:id="@+id/action_posicion"
+        android:icon="@drawable/ic_baseline_gps_fixed_24px"
+        android:title="Posición" />
+</menu>
