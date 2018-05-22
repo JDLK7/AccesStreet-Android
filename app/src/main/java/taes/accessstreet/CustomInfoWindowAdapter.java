@@ -43,7 +43,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter,
         name_tv.setText(m.getTitle());
         details_tv.setText(m.getSnippet());
 
-        return v;
+        return null;
     }
 
 

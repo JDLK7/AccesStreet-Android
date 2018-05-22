@@ -449,7 +449,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         startActivity(mapa);
                     }
                 });
-                return v;
+                return null;
             }
         });
     }
