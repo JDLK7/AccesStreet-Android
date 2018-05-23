@@ -53,10 +53,9 @@
 
     <!-- PREFERENCES ACTIVITY -->
     <string name="save_submit_button">Guardar</string>
-    <string name="acousticSemaphore">Semáforo Acusticos</string>
     <string name="accessiblePark">Parking Discapacitados</string>
     <string name="accessibleWC">Baños adaptados</string>
-    <string name="elevator">Ascensores</string>
+    <string name="accessibleElevator">Ascensores</string>
     <string name="accessibleStair">Escaleras</string>
     <string name="accessibleSlope">Rampas accesibles</string>
     <string name="obstacleSlope">Rampa inaccesible</string>

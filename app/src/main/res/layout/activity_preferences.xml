@@ -99,51 +99,6 @@
             </android.support.v7.widget.CardView>
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/Layout1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/acousticSemaphore"
-                    android:layout_height="match_parent"
-                    android:layout_width="0dp"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:lineSpacingExtra="10sp"
-                    android:text="@string/acousticSemaphore"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="#ffffff"
-                    android:textSize="24sp"
-                    android:typeface="normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/acousticSemaphore_switch"
-                    app:layout_constraintStart_toEndOf="@+id/imageView14"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Switch
-                    android:id="@+id/acousticSemaphore_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/acousticSemaphore"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imageView14"
-                    app:srcCompat="@drawable/marker_accessible_stair"
-                    android:layout_width="40dp"
-                    android:layout_height="45dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
                 android:id="@+id/Layout2"
                 style="@style/layout">
 
@@ -240,7 +195,7 @@
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif-condensed"
                     android:lineSpacingExtra="10sp"
-                    android:text="@string/elevator"
+                    android:text="@string/accessibleElevator"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#ffffff"
                     android:textSize="24sp"
@@ -261,7 +216,7 @@
 
                 <ImageView
                     android:id="@+id/imageView13"
-                    app:srcCompat="@drawable/marker_accessible_stair"
+                    app:srcCompat="@drawable/marker_accessible_elevator"
                     android:layout_width="40dp"
                     android:layout_height="45dp"
                     android:layout_marginBottom="8dp"

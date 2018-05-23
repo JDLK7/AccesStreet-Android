@@ -60,11 +60,6 @@ public class OptionsActivity extends AppCompatActivity {
 
         CardView b= findViewById(R.id.signup);
 
-        // Cargamos las preferencias del Primero "Semaforo Acustico"
-        Switch acousticSemaphore = (Switch) findViewById(R.id.acousticSemaphore_switch);
-        boolean acousticSemaphorePref = miPreferencia.getBoolean("acousticSemaphore",false);
-        acousticSemaphore.setChecked(acousticSemaphorePref);
-
         // Cargamos las preferencias del Primero "Parking discapacitados"
         Switch accessiblePark = (Switch) findViewById(R.id.accessiblePark_switch);
         boolean accessibleParkPref = miPreferencia.getBoolean("accessiblePark",false);
@@ -77,8 +72,8 @@ public class OptionsActivity extends AppCompatActivity {
 
         // Cargamos las preferencias del Primero "Ascensores"
         Switch elevator = (Switch) findViewById(R.id.elevator_switch);
-        boolean elevatorPref = miPreferencia.getBoolean("elevator",false);
-        elevator.setChecked(elevatorPref);
+        boolean accessibleElevatorPref = miPreferencia.getBoolean("accessibleElevator",false);
+        elevator.setChecked(accessibleElevatorPref);
 
         // Cargamos las preferencias del Primero "Escaleras"
         Switch accessibleStair = (Switch) findViewById(R.id.accessibleStair_switch);
@@ -118,11 +113,6 @@ public class OptionsActivity extends AppCompatActivity {
                 SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = miPreferencia.edit();
 
-                // Guardamos las preferencias del Primero "Semaforo Acustico"
-                Switch acousticSemaphore = (Switch) findViewById(R.id.acousticSemaphore_switch);
-                Boolean acousticSemaphorePref = acousticSemaphore.isChecked();
-                editor.putBoolean("acousticSemaphore",acousticSemaphorePref);
-
                 // Guardamos las preferencias del Primero "Parking discapacitados"
                 Switch accessiblePark = (Switch) findViewById(R.id.accessiblePark_switch);
                 Boolean accessibleParkPref = accessiblePark.isChecked();
@@ -135,8 +125,8 @@ public class OptionsActivity extends AppCompatActivity {
 
                 // Guardamos las preferencias del Primero "Ascensores"
                 Switch elevator = (Switch) findViewById(R.id.elevator_switch);
-                Boolean elevatorPref = elevator.isChecked();
-                editor.putBoolean("elevator",elevatorPref);
+                Boolean accessibleElevatorPref = elevator.isChecked();
+                editor.putBoolean("accessibleElevator",accessibleElevatorPref);
 
                 // Guardamos las preferencias del Primero "Escaleras"
                 Switch accessibleStair = (Switch) findViewById(R.id.accessibleStair_switch);

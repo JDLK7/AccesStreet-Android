@@ -104,7 +104,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private boolean accessibleParkPref;
     private boolean accessibleWCPref;
-    private boolean elevatorPref;
+    private boolean accessibleElevatorPref;
     private boolean accessibleStairPref;
     private boolean accessibleSlopePref;
     private boolean obstacleSlopePref;
@@ -131,7 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         accessibleParkPref = miPreferencia.getBoolean("accessiblePark",false);
         accessibleWCPref = miPreferencia.getBoolean("accessibleWC",false);
-        elevatorPref = miPreferencia.getBoolean("elevator",false);
+        accessibleElevatorPref = miPreferencia.getBoolean("accessibleElevator",false);
         accessibleStairPref = miPreferencia.getBoolean("accessibleStair",false);
         accessibleSlopePref = miPreferencia.getBoolean("accessibleSlope",false);
         obstacleSlopePref = miPreferencia.getBoolean("obstacleSlope",false);
@@ -251,7 +251,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected boolean isShownAlert(String iconName) {
         return (iconName.equals("marker_accessible_park") && accessibleParkPref)
             || (iconName.equals("marker_accessible_wc") && accessibleWCPref)
-            || (iconName.equals("R.mipmap.ascensor") && elevatorPref)
+            || (iconName.equals("marker_accessible_elevator") && accessibleElevatorPref)
             || (iconName.equals("marker_accessible_stair") && accessibleStairPref)
             || (iconName.equals("marker_accessible_slope") && accessibleSlopePref)
             || (iconName.equals("marker_obstacle_slope") && obstacleSlopePref)
@@ -648,11 +648,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String prefs="";
         SharedPreferences miPreferencia = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        boolean acousticSemaphorePref = miPreferencia.getBoolean("acousticSemaphore",false);
-        if(acousticSemaphorePref){
-            prefs=prefs+"1,";
-        }
-
         boolean accessibleParkPref = miPreferencia.getBoolean("accessiblePark",false);
         if(accessibleParkPref){
             prefs=prefs+"2,";
@@ -663,8 +658,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             prefs=prefs+"3,";
         }
 
-        boolean elevatorPref = miPreferencia.getBoolean("elevator",false);
-        if(elevatorPref){
+        boolean accessibleElevatorPref = miPreferencia.getBoolean("accessibleElevator",false);
+        if(accessibleElevatorPref){
             prefs=prefs+"4,";
         }
 

@@ -59,6 +59,9 @@ public class valorar extends AppCompatActivity {
             case "marker_accessible_slope":
                 imagenValorar.setImageResource(R.drawable.marker_accessible_slope);
                 break;
+            case "marker_accessible_elevator":
+                imagenValorar.setImageResource(R.drawable.marker_accessible_elevator);
+                break;
             case "marker_accessible_stair":
                 imagenValorar.setImageResource(R.drawable.marker_accessible_stair);
                 break;
@@ -79,7 +82,11 @@ public class valorar extends AppCompatActivity {
                 break;
 
         }
-        //imagenValorar.setImageResource(R.drawable.marker_accessible_park);
-        nombreCreador.setText("Usuario: " + split[5]);
+
+        if (split.length > 5) {
+            nombreCreador.setText("Usuario: " + split[5]);
+        } else {
+            nombreCreador.setText("Usuario: " + "Admin");
+        }
     }
 }

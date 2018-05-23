@@ -123,6 +123,61 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:tag="accessibleElevator"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="top"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:onClick="createInterestPoint"
+        card_view:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/view8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:elevation="12dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardBackgroundColor="@color/colorAccessibleElevator"
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp"
+                app:layout_constraintLeft_toRightOf="parent">
+
+
+                <ImageView
+                    android:id="@+id/imageView24"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_accessible_elevator"
+                    android:tint="@color/white"></ImageView>
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/accessibleElevator"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toRightOf="@+id/view3" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:tag="accessibleStair"
         android:layout_width="match_parent"
         android:layout_height="80dp"
