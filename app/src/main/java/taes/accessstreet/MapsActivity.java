@@ -37,9 +37,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -109,6 +111,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean obstacleStairPref;
     private boolean obstacleSidewalkPref;
     private boolean obstacleWorksPref;
+
+    String creador;
+    String fechaCreacion;
+    String tituloCreacion;
+    String resultado;
+
+    private Context context;
 
     public static final String PREFS_NAME = "Preferencias";
 
@@ -453,12 +462,54 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 else {
 
-                    //Creamos el Intent
-                    Intent mapa = new Intent(MapsActivity.this, valorar.class);
-                    mapa.putExtra("pointID",pointId);
+                    String url = "http://"
+                            + getResources().getString(R.string.accesstreet_api_host) + ":"
+                            + getResources().getString(R.string.accesstreet_api_port) + "/api/puntos/info/" + pointId;
 
-                    //Iniciamos la nueva actividad
-                    startActivity(mapa);
+                    context = getApplicationContext();
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                            (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+
+                                        JSONObject typePoint = response.getJSONObject("typepoint");
+                                        if (typePoint != null) {
+                                            tituloCreacion = typePoint.getString("name");
+                                            fechaCreacion = typePoint.getString("created_at");
+
+                                            resultado = tituloCreacion + "/" + fechaCreacion +"/";
+                                        }
+
+                                        JSONObject user = response.getJSONObject("user");
+                                        if (user != null) {
+                                            creador = user.getString("email");
+                                            resultado += creador;
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    Intent mapa = new Intent(MapsActivity.this, valorar.class);
+                                    mapa.putExtra("resultado",resultado);
+
+                                    //Iniciamos la nueva actividad
+                                    startActivity(mapa);
+
+                                }
+                            }, new Response.ErrorListener() {
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            });
+
+                    requestQueue.add(jsonObjectRequest);
 
                     return null;
                 }
