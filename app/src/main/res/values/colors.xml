@@ -7,7 +7,7 @@
     <color name="white">#fff</color>
 
     <!-- COLORES DE PUNTOS DE INTERÉS -->
-    <color name="colorAccessibleParkAlert">#2196F3</color>
+    <color name="colorAccessibleParkAlert">#2196f3</color>
     <color name="colorAccessibleWCAlert">#00BCD4</color>
     <color name="colorAccessibleStairAlert">#E91E63</color>
     <color name="colorAccessibleSlopeAlert">#9C27B0</color>
