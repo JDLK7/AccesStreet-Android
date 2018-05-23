@@ -115,6 +115,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String creador;
     String fechaCreacion;
     String tituloCreacion;
+    String tipoCreacion;
+    String toleranciaCreacion;
     String resultado;
 
     private Context context;
@@ -447,7 +449,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public View getInfoContents(Marker marker) {
 
                 // Se recupera el ID del punto para poder recuperar los datos del mismo y de su creador
-                int pointId = Integer.valueOf(marker.getSnippet());
+                final int pointId = Integer.valueOf(marker.getSnippet());
                 View v = getLayoutInflater().inflate(R.layout.informacion,null);
 
                 if(pointId == 0) {
@@ -478,16 +480,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     try {
 
                                         JSONObject typePoint = response.getJSONObject("typepoint");
+                                        String peso = response.getString("peso");
                                         if (typePoint != null) {
                                             tituloCreacion = typePoint.getString("name");
                                             fechaCreacion = typePoint.getString("created_at");
+                                            tipoCreacion = typePoint.getString("id");
+                                            toleranciaCreacion = peso;
+                                            String imagen = typePoint.getString("icon");
 
-                                            resultado = tituloCreacion + "/" + fechaCreacion +"/";
+                                            resultado = tituloCreacion + "/" + fechaCreacion +"/" + tipoCreacion + "/" + toleranciaCreacion + "/" + imagen + "/";
                                         }
 
                                         JSONObject user = response.getJSONObject("user");
                                         if (user != null) {
-                                            creador = user.getString("email");
+                                            creador = user.getString("name");
                                             resultado += creador;
                                         }
                                     } catch (JSONException e) {
@@ -496,7 +502,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                     Intent mapa = new Intent(MapsActivity.this, valorar.class);
                                     mapa.putExtra("resultado",resultado);
-
                                     //Iniciamos la nueva actividad
                                     startActivity(mapa);
 

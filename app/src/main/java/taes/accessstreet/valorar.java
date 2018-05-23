@@ -1,31 +1,23 @@
 package taes.accessstreet;
 
 import android.content.Context;
-import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class valorar extends AppCompatActivity {
 
-    ImageButton megusta;
-    ImageButton reportar;
-    TextView puntuacion;
     TextView nombreCreador;
     TextView nombreFecha;
     TextView nombreTitulo;
+    TextView nombreTipo;
+    TextView nombreTolerancia;
+    ImageView imagenValorar;
+
 
     private Context context;
 
@@ -40,40 +32,55 @@ public class valorar extends AppCompatActivity {
 
         String[] split = valor.split("/");
 
-        megusta = (ImageButton)findViewById(R.id.corazon);
+        nombreTitulo = (TextView)findViewById(R.id.titulo_valorar);
+        nombreCreador = (TextView)findViewById(R.id.usuario_valorar);
+        nombreFecha = (TextView)findViewById(R.id.fecha_valorar);
+        nombreTipo = (TextView) findViewById(R.id.tipo_valorar);
+        nombreTolerancia = (TextView) findViewById(R.id.tolerancia_valorar);
+        imagenValorar = (ImageView) findViewById(R.id.imagen_valorar);
 
-        reportar = (ImageButton)findViewById(R.id.imageButton2);
-
-        nombreTitulo = (TextView)findViewById(R.id.titulo);
-        nombreCreador = (TextView)findViewById(R.id.creador);
-        nombreFecha = (TextView)findViewById(R.id.textView19);
+        //Titulo - Fecha - Tipo - Tolerancia - Nombre
 
         nombreTitulo.setText(split[0]);
-        nombreCreador.setText(split[2]);
-        nombreFecha.setText(split[1]);
+        nombreFecha.setText("Fecha: " + split[1]);
+        int tipo = Integer.parseInt(split[2]);
+        if (tipo >= 0 && tipo <= 6) {
+            nombreTipo.setText("Tipo: Punto de Interes");
+        }
+        else {
+            nombreTipo.setText("Tipo: Obstaculo");
+        }
+        nombreTolerancia.setText("Toleracia: " + split[3]);
+        String ruta = "R.drawable." + split[4];
+        switch (split[4]) {
+            case "marker_accessible_park":
+                imagenValorar.setImageResource(R.drawable.marker_accessible_park);
+                break;
+            case "marker_accessible_slope":
+                imagenValorar.setImageResource(R.drawable.marker_accessible_slope);
+                break;
+            case "marker_accessible_stair":
+                imagenValorar.setImageResource(R.drawable.marker_accessible_stair);
+                break;
+            case "marker_accessible_wc":
+                imagenValorar.setImageResource(R.drawable.marker_accessible_wc);
+                break;
+            case "marker_obstacle_sidewalk":
+                imagenValorar.setImageResource(R.drawable.marker_obstacle_sidewalk);
+                break;
+            case "marker_obstacle_slope":
+                imagenValorar.setImageResource(R.drawable.marker_obstacle_slope);
+                break;
+            case "marker_obstacle_stair":
+                imagenValorar.setImageResource(R.drawable.marker_obstacle_stair);
+                break;
+            case "marker_obstacle_works":
+                imagenValorar.setImageResource(R.drawable.marker_obstacle_works);
+                break;
 
-        megusta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                megusta.setImageResource(R.drawable.concorazon);
-                puntuacion = (TextView)findViewById(R.id.gustar);
-                puntuacion.setText("Le gusta a 1 personas");
-
-            }
-        });
-
-        megusta.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                megusta.setImageResource(R.drawable.sincorazon);
-                puntuacion = (TextView)findViewById(R.id.gustar);
-                puntuacion.setText("Le gusta a 0 personas");
-
-                return true;
-            }
-        });
+        }
+        //imagenValorar.setImageResource(R.drawable.marker_accessible_park);
+        nombreCreador.setText("Usuario: " + split[5]);
 
     }
 }
