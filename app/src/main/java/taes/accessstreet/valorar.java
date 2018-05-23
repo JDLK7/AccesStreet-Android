@@ -75,5 +75,14 @@ public class valorar extends AppCompatActivity {
             }
         });
 
+        reportar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(valorar.this, denuncias.class);
+                    startActivity(intent);
+                }
+        });
+
+
     }
 }
