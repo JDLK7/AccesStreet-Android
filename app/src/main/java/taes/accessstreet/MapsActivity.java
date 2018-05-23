@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
@@ -436,26 +437,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public View getInfoContents(Marker marker) {
 
-                View v = getLayoutInflater().inflate(R.layout.informacion,null);
-
-                titulo = (TextView) v.findViewById(R.id.titulo);
-                titulo.setText(marker.getTitle());
-
                 // Se recupera el ID del punto para poder recuperar los datos del mismo y de su creador
                 int pointId = Integer.valueOf(marker.getSnippet());
+                View v = getLayoutInflater().inflate(R.layout.informacion,null);
 
-                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                    @Override
-                    public void onInfoWindowClick(Marker marker) {
+                if(pointId == 0) {
 
-                        //Creamos el Intent
-                        Intent mapa = new Intent(MapsActivity.this, valorar.class);
+                    titulo = (TextView) v.findViewById(R.id.titulo);
 
-                        //Iniciamos la nueva actividad
-                        startActivity(mapa);
-                    }
-                });
-                return v;
+                    titulo.setText(marker.getTitle());
+
+                    return v;
+
+                }
+
+                else {
+
+                    //Creamos el Intent
+                    Intent mapa = new Intent(MapsActivity.this, valorar.class);
+                    mapa.putExtra("pointID",pointId);
+
+                    //Iniciamos la nueva actividad
+                    startActivity(mapa);
+
+                    return null;
+                }
             }
         });
     }
@@ -545,8 +551,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     iconId = R.drawable.user;
                                 }
 
-                                MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId))
-                                .title(name);
+                                MarkerOptions mark = new MarkerOptions().position(coordenada).icon(BitmapDescriptorFactory.fromResource(iconId));
 
                                 // Se guarda el ID del punto en el snippet para poder recuperar sus
                                 // sus detalles y su creador al abrir el popup de detalles de un
@@ -573,7 +578,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (destino != null) destino.remove();
         destino = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(destination.latitude, destination.longitude))
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).title("Destino").snippet("0"));
         GPSTracking gps = new GPSTracking(getApplicationContext());
         System.out.println("******************** Origen --> " + gps.getLng() + ":" + gps.getLat());
         System.out.println("******************** Destino --> " + destination.longitude + ":" + destination.latitude);
