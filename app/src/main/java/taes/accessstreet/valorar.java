@@ -81,15 +81,5 @@ public class valorar extends AppCompatActivity {
         }
         //imagenValorar.setImageResource(R.drawable.marker_accessible_park);
         nombreCreador.setText("Usuario: " + split[5]);
-
-        reportar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(valorar.this, denuncias.class);
-                    startActivity(intent);
-                }
-        });
-
-
     }
 }
