@@ -481,9 +481,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                         JSONObject typePoint = response.getJSONObject("typepoint");
                                         String peso = response.getString("peso");
+                                        String f = response.getString("created_at");
                                         if (typePoint != null) {
                                             tituloCreacion = typePoint.getString("name");
-                                            fechaCreacion = typePoint.getString("created_at");
+                                            fechaCreacion = f;
                                             tipoCreacion = typePoint.getString("id");
                                             toleranciaCreacion = peso;
                                             String imagen = typePoint.getString("icon");

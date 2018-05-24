@@ -1,10 +1,12 @@
 package taes.accessstreet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ public class valorar extends AppCompatActivity {
     TextView nombreTipo;
     TextView nombreTolerancia;
     ImageView imagenValorar;
+    Button boton;
 
 
     private Context context;
@@ -88,5 +91,16 @@ public class valorar extends AppCompatActivity {
         } else {
             nombreCreador.setText("Usuario: " + "Admin");
         }
+
+        boton = (Button)findViewById(R.id.button3);
+
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent mapa = new Intent(valorar.this, denuncias.class);
+                startActivity(mapa);
+            }
+        });
     }
 }
